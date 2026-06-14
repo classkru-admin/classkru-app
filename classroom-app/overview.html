@@ -158,13 +158,13 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 .tag-danger{background:#fef2f2;color:#dc2626;}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);height:60px;display:flex;z-index:200;box-shadow:0 -1px 0 rgba(0,0,0,.06);padding-bottom:var(--safe-bottom);}
-.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;font-family:'Sarabun',sans-serif;padding:6px 0 4px;}
-.bn:active{opacity:.6;}
-.bn svg{width:22px;height:22px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-.bn span{font-size:10px;font-weight:600;color:#9ca3af;}
-.bn.active svg{stroke:var(--primary);}
-.bn.active span{color:var(--primary);font-weight:700;}
+.m-bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);height:62px;display:flex;z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,.06);padding-bottom:env(safe-area-inset-bottom,0);}
+.m-bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;font-family:'Sarabun',sans-serif;padding:6px 0 4px;-webkit-tap-highlight-color:transparent;}
+.m-bn:active{opacity:.6;}
+.m-bn svg{width:22px;height:22px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.m-bn span{font-size:10px;font-weight:600;color:#9ca3af;}
+.m-bn.active svg{stroke:var(--primary);}
+.m-bn.active span{color:var(--primary);font-weight:700;}
 
 /* BOTTOM SHEET */
 .bs-ov{position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:500;opacity:0;pointer-events:none;transition:opacity .2s;}
@@ -214,7 +214,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 @media(min-width:768px){
   /* ซ่อน mobile elements */
   .wrap{display:none !important;}
-  .bottom-nav{display:none !important;}
+  .m-bottom-nav{display:none !important;}
   .bs-ov,.bs-sheet,.cal-ov,.cal-popup{display:none !important;}
 
   body{overflow:hidden;}
@@ -283,7 +283,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
   .d-app{display:none !important;}
   .d-class-pills{display:none !important;}
   .d-tab-bar{display:none !important;}
-  .bottom-nav{display:flex !important;}
+  .m-bottom-nav{display:flex !important;}
   .wrap{display:flex !important;}
 }
 </style>
@@ -371,26 +371,26 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 </div><!-- /wrap -->
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="bn" onclick="go('index.html')">
+<nav class="m-bottom-nav">
+  <button class="m-bn" onclick="go('index.html')">
     <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
     <span>หน้าหลัก</span>
   </button>
-  <button class="bn" onclick="go('schedule.html')">
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+  <button class="m-bn" onclick="go('schedule.html')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
     <span>ตารางสอน</span>
   </button>
-  <button class="bn" onclick="go('attendance.html')" style="position:relative;">
+  <button class="m-bn" onclick="go('attendance.html')" style="position:relative;">
     <div style="position:absolute;top:-14px;width:50px;height:50px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(29,158,117,.4);border:3px solid #fff;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
     </div>
     <span style="margin-top:22px;">เช็คชื่อ</span>
   </button>
-  <button class="bn active" onclick="go('report.html')">
+  <button class="m-bn active">
     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span>สถิติ</span>
   </button>
-  <button class="bn" onclick="go('settings.html')">
+  <button class="m-bn" onclick="go('settings.html')">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     <span>ตั้งค่า</span>
   </button>
