@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thai Curriculum Copilot — ระบบสร้างสื่อการสอนอัจฉริยะ</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ── Core Design System ── */
+    :root {
+      --primary: #1d9e75;
+      --primary-hover: #0f6e56;
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Subject Themes HSL */
+      --science: #1d9e75;
+      --science-bg: #f0fdf4;
+      --science-border: #bbf7d0;
+      
+      --english: #6366f1;
+      --english-bg: #eef2ff;
+      --english-border: #c7d2fe;
+      
+      --social: #f97316;
+      --social-bg: #fff7ed;
+      --social-border: #ffedd5;
+      
+      --health: #0284c7;
+      --health-bg: #f0f9ff;
+      --health-border: #bae6fd;
+      
+      --arts: #ec4899;
+      --arts-bg: #fdf2f8;
+      --arts-border: #fbcfe8;
+      
+      --tech: #0f766e;
+      --tech-bg: #f0fdfa;
+      --tech-border: #ccfbf1;
+    }
+
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    body { 
+      font-family: 'Sarabun', 'Inter', sans-serif; 
+      background: var(--bg-main); 
+      color: var(--text-main); 
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 120px; /* Space for checkout bar */
+    }
+
+    /* ── Navigation ── */
+    nav {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 1.5rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    
+    .nav-logo { 
+      font-size: 16px; 
+      font-weight: 800; 
+      display: flex; 
+      align-items: center; 
+      gap: 10px;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+    
+    .nav-logo-icon {
+      font-size: 22px;
+    }
+    
+    .nav-tag { 
+      font-size: 12px; 
+      background: #e2f4ed; 
+      color: var(--primary); 
+      padding: 4px 12px; 
+      border-radius: 20px; 
+      font-weight: 700; 
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Hero Section ── */
+    .hero { 
+      background: #ffffff; 
+      text-align: center; 
+      padding: 3.5rem 1.5rem 3rem; 
+      border-bottom: 1px solid var(--border-color); 
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(29, 158, 117, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    
+    .hero h1 { 
+      font-size: 32px; 
+      font-weight: 800; 
+      color: var(--primary-hover); 
+      margin-bottom: 0.75rem; 
+      line-height: 1.25; 
+      letter-spacing: -0.02em;
+    }
+    
+    .hero p { 
+      font-size: 16px; 
+      color: var(--text-muted); 
+      line-height: 1.7; 
+      max-width: 600px; 
+      margin: 0 auto 1.5rem; 
+    }
+    
+    .hero-price {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 16px;
+      padding: 10px 24px;
+      font-size: 14px;
+      color: #92400e;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .hero-price strong { 
+      font-size: 24px; 
+      font-weight: 800; 
+      color: #d97706; 
+    }
+
+    /* ── Main Container ── */
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 1.5rem; 
+    }
+    
+    .section-label {
+      font-size: 12px; 
+      font-weight: 700; 
+      color: var(--text-muted);
+      text-transform: uppercase; 
+      letter-spacing: 0.07em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Dashboard Layout ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1.3fr 0.7fr;
+      }
+    }
+
+    /* ── Teacher Tabs ── */
+    .teacher-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding: 4px 4px 10px 4px;
+      scrollbar-width: thin;
+    }
+    
+    .teacher-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 12px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .teacher-tab:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .teacher-tab.active {
+      border-width: 2px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .teacher-avatar {
+      font-size: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+    }
+    
+    .teacher-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .teacher-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    
+    .teacher-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── Timetable Section ── */
+    .timetable-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .timetable-scroll-hint {
+      background: #f8fafc;
+      padding: 8px;
+      font-size: 11px;
+      text-align: center;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .timetable-scroll-hint {
+        display: block;
+      }
+    }
+    
+    .timetable-container {
+      overflow-x: auto;
+      width: 100%;
+    }
+    
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    
+    .timetable th, .timetable td {
+      border: 1px solid var(--border-color);
+      padding: 12px 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    
+    .timetable th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 13px;
+      height: 45px;
+    }
+    
+    .time-col {
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 12px;
+      width: 90px;
+      background: #f8fafc;
+    }
+    
+    .day-row-header {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 14px;
+      width: 80px;
+      background: #f8fafc;
+    }
+
+    /* Timetable Cells */
+    .slot-card {
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 68px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      transition: var(--transition);
+      line-height: 1.4;
+      user-select: none;
+    }
+    
+    .slot-card .sub-subject {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.8;
+      margin-top: 3px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 2px;
+      width: 100%;
+    }
+    
+    .slot-card.empty {
+      border: 1.5px dashed #cbd5e1;
+      color: #94a3b8;
+      font-weight: 400;
+      background: #fcfdfe;
+    }
+    
+    .slot-card.lunch {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .slot-card.activity {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      font-weight: 500;
+    }
+    
+    .slot-card.subject {
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .slot-card.subject:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .slot-card.subject.active-subject {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px var(--active-subject-color, var(--primary)), var(--shadow-md);
+    }
+
+    /* Timetable Subject Styles */
+    .subject-science { background: var(--science-bg); border: 1px solid var(--science-border); color: var(--science); }
+    .subject-english { background: var(--english-bg); border: 1px solid var(--english-border); color: var(--english); }
+    .subject-social { background: var(--social-bg); border: 1px solid var(--social-border); color: var(--social); }
+    .subject-health { background: var(--health-bg); border: 1px solid var(--health-border); color: var(--health); }
+    .subject-arts { background: var(--arts-bg); border: 1px solid var(--arts-border); color: var(--arts); }
+    .subject-tech { background: var(--tech-bg); border: 1px solid var(--tech-border); color: var(--tech); }
+
+    /* Timetable Legend */
+    .legend-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 4px;
+      margin-top: 1rem;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 4px;
+    }
+
+    /* ── Curriculum / Indicators Panel (Right Column) ── */
+    .curriculum-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+      transition: var(--transition);
+    }
+    
+    .curriculum-card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background: #f8fafc;
+    }
+    
+    .curriculum-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .curriculum-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    
+    .unit-list {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    /* Unit Card styling */
+    .unit-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .unit-card:hover { 
+      border-color: #cbd5e1; 
+    }
+    
+    .unit-card.active { 
+      border-color: var(--unit-theme-color, var(--primary)); 
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .unit-header {
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      padding: 1rem 1.25rem; 
+      user-select: none;
+      cursor: pointer;
+      background: #ffffff;
+    }
+    
+    .unit-dot { 
+      width: 12px; 
+      height: 12px; 
+      border-radius: 4px; 
+      flex-shrink: 0; 
+    }
+    
+    .unit-name { 
+      font-size: 14px; 
+      font-weight: 700; 
+      flex: 1; 
+      color: var(--text-main);
+    }
+    
+    .unit-meta { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    
+    .unit-chevron { 
+      font-size: 16px; 
+      color: #94a3b8; 
+      transition: transform 0.2s; 
+      display: inline-block; 
+    }
+    
+    .unit-card.active .unit-chevron { 
+      transform: rotate(180deg); 
+    }
+    
+    .indicators {
+      display: none; 
+      flex-direction: column; 
+      gap: 6px;
+      padding: 0 1rem 1rem;
+      border-top: 1px solid #f1f5f9;
+      background: #fafbfd;
+    }
+    
+    .unit-card.active .indicators { 
+      display: flex; 
+    }
+    
+    /* Indicator Rows */
+    .indicator-row {
+      display: flex; 
+      align-items: flex-start; 
+      gap: 12px;
+      padding: 10px 12px; 
+      border-radius: 10px; 
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition);
+      margin-top: 6px;
+    }
+    
+    .indicator-row:hover { 
+      background: #f1f5f9; 
+    }
+    
+    .indicator-row.selected { 
+      background: var(--unit-theme-bg); 
+      border-color: var(--unit-theme-border);
+    }
+    
+    .ind-check {
+      width: 20px; 
+      height: 20px; 
+      border-radius: 6px;
+      border: 2px solid #cbd5e1; 
+      flex-shrink: 0; 
+      margin-top: 2px;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      font-size: 11px; 
+      transition: var(--transition);
+      background: #ffffff;
+    }
+    
+    .indicator-row.selected .ind-check { 
+      background: var(--unit-theme-color, var(--primary)); 
+      border-color: var(--unit-theme-color, var(--primary)); 
+      color: #fff; 
+    }
+    
+    .ind-code { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: var(--unit-theme-color, var(--primary)); 
+      display: block; 
+      margin-bottom: 2px; 
+    }
+    
+    .ind-text { 
+      font-size: 13px; 
+      color: var(--text-main); 
+      line-height: 1.5; 
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    
+    .empty-state-icon {
+      font-size: 40px;
+      margin-bottom: 1rem;
+      animation: bounce 2s infinite;
+    }
+    
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+      font-size: 13px;
+      line-height: 1.5;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ── Bottom Floating Checkout Bar ── */
+    .checkout-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-color);
+      padding: 16px 24px;
+      box-shadow: 0 -10px 25px -5px rgb(0 0 0 / 0.08);
+      z-index: 100;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .checkout-bar.visible {
+      transform: translateY(0);
+    }
+    
+    .checkout-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    @media (min-width: 768px) {
+      .checkout-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+    }
+    
+    .checkout-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    
+    .checkout-count-badge {
+      background: #f1f5f9;
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+    }
+    
+    .checkout-price {
+      font-size: 24px;
+      font-weight: 800;
+      color: #b45309;
+    }
+    
+    .checkout-price small {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-left: 2px;
+    }
+    
+    .checkout-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex-grow: 1;
+      max-height: 48px;
+      overflow-y: auto;
+      padding: 2px 0;
+    }
+    
+    .checkout-chip {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1px solid var(--border-color);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .checkout-chip button {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      padding: 0;
+      transition: var(--transition);
+    }
+    
+    .checkout-chip button:hover {
+      color: #ef4444;
+    }
+    
+    .btn-checkout {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(29, 158, 117, 0.2);
+    }
+    
+    .btn-checkout:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(29, 158, 117, 0.3);
+    }
+    
+    .btn-checkout:active {
+      transform: translateY(0);
+    }
+
+    /* ── Checkout Page (Generate Output) ── */
+    #generatePage { 
+      display: none; 
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .gen-header {
+      background: #ffffff; 
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.25rem 1.5rem;
+      display: flex; 
+      align-items: center; 
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    
+    .btn-back {
+      background: #f1f5f9; 
+      border: none; 
+      font-size: 16px;
+      cursor: pointer; 
+      color: var(--text-main); 
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    
+    .btn-back:hover {
+      background: #e2e8f0;
+    }
+    
+    .gen-header h2 { 
+      font-size: 18px; 
+      font-weight: 800; 
+    }
+    
+    .receipt-card {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .receipt-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 0.5rem;
+    }
+    
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #b45309;
+      margin-bottom: 4px;
+    }
+    
+    .receipt-indicators {
+      font-size: 13px;
+      color: #78350f;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-top: 10px;
+      border: 1px dashed rgba(217, 119, 6, 0.2);
+    }
+    
+    .output-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      .output-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .output-card {
+      background: #ffffff; 
+      border: 1px solid var(--border-color);
+      border-radius: 18px; 
+      padding: 1.25rem; 
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .output-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .output-info-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .output-icon {
+      font-size: 24px;
+      background: #f1f5f9;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .output-details {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .output-title { 
+      font-size: 15px; 
+      font-weight: 700; 
+      color: var(--text-main);
+    }
+    
+    .output-desc { 
+      font-size: 12px; 
+      color: var(--text-muted); 
+      line-height: 1.5; 
+      margin-top: 4px;
+    }
+    
+    .output-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+    }
+    
+    .btn-dl {
+      background: #eaf3de; 
+      color: var(--primary); 
+      border: none; 
+      border-radius: 10px; 
+      padding: 8px 16px;
+      font-size: 13px; 
+      font-weight: 700; 
+      cursor: pointer; 
+      transition: var(--transition);
+    }
+    
+    .btn-dl:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .coming-soon { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      font-weight: 500;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="mainPage">
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-logo">
+      <span class="nav-logo-icon">📚</span>
+      <span>Thai Curriculum Copilot</span>
+    </div>
+    <span class="nav-tag" id="activeProfileTag">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1d9e75"></span>
+      พร้อมใช้งาน
+    </span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <h1>คลิกตารางสอน...สร้างได้เลย</h1>
+    <p>ช่วยครูไทยออกแบบสื่อการเรียนการสอนรายสัปดาห์ แผนการสอน ใบงาน ข้อสอบ เฉลย Rubric ครบถ้วนตรงตัวชี้วัดหลักสูตรแกนกลาง 100%</p>
+    <div class="hero-price">
+      แพ็กเกจเฉลี่ย &nbsp;<strong>39 บาท</strong> / ตัวชี้วัด
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Teacher & Timetable -->
+      <div class="dashboard-left">
+        <div class="section-label">
+          <span>🧑‍🏫</span> เลือกโปรไฟล์ตารางสอนครู
+        </div>
+        <div class="teacher-tabs" id="teacherTabs">
+          <!-- Rendered dynamically -->
+        </div>
+        
+        <div class="section-label" style="margin-top: 1.5rem;">
+          <span>📅</span> คลิกคาบเรียนในตารางเพื่อออกแบบหน่วยและเลือกตัวชี้วัด
+        </div>
+        <div class="timetable-wrapper">
+          <div class="timetable-scroll-hint">← เลื่อนซ้าย-ขวาเพื่อดูตารางทั้งหมด →</div>
+          <div class="timetable-container">
+            <table class="timetable">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">วัน</th>
+                  <th>คาบ 1<br><span style="font-size:10px;font-weight:500;">8.40-9.40</span></th>
+                  <th>คาบ 2<br><span style="font-size:10px;font-weight:500;">9.40-10.40</span></th>
+                  <th>คาบ 3<br><span style="font-size:10px;font-weight:500;">10.30-11.40</span></th>
+                  <th style="width: 80px; background: #f1f5f9;">พัก<br><span style="font-size:10px;font-weight:500;color:var(--text-muted);">11.40-12.40</span></th>
+                  <th>คาบ 4<br><span style="font-size:10px;font-weight:500;">12.40-13.40</span></th>
+                  <th>คาบ 5<br><span style="font-size:10px;font-weight:500;">13.40-14.40</span></th>
+                  <th>คาบ 6<br><span style="font-size:10px;font-weight:500;">14.40-15.40</span></th>
+                </tr>
+              </thead>
+              <tbody id="timetableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend-container">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--science)"></span>วิทยาศาสตร์</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--tech)"></span>คอมพิวเตอร์ / เทคโนโลยี</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--english)"></span>ภาษาอังกฤษ</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--social)"></span>สังคมฯ / ประวัติศาสตร์</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--health)"></span>สุขศึกษา / พละ</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--arts)"></span>ศิลปะ / ทัศนศิลป์</div>
+        </div>
+      </div>
+      
+      <!-- Right Column: Indicators -->
+      <div class="dashboard-right">
+        <div class="section-label">
+          <span>🎯</span> รายละเอียดตัวชี้วัดวิชาที่เลือก
+        </div>
+        <div class="curriculum-card" id="curriculumCard">
+          <!-- Rendered dynamically (subject content or empty state) -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Bottom Floating Checkout Bar -->
+  <div class="checkout-bar" id="checkoutBar">
+    <div class="checkout-container">
+      <div class="checkout-info">
+        <span class="checkout-count-badge">เลือกแล้ว <strong id="selectedCount">0</strong> ตัวชี้วัด</span>
+        <div class="checkout-price" id="checkoutPrice">0<small>บาท</small></div>
+      </div>
+      <div class="checkout-chips" id="checkoutChips">
+        <!-- Rendered dynamically -->
+      </div>
+      <button class="btn-checkout" id="btnCheckout" disabled onclick="handleGenerate()">
+        <span>✨ สร้างสื่อการสอน</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Output / Download Page -->
+<div id="generatePage">
+  <div class="gen-header">
+    <button class="btn-back" onclick="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    </button>
+    <h2 id="generatePageTitle">สื่อการสอนอัจฉริยะของคุณ</h2>
+  </div>
+  
+  <div class="container" style="max-width: 800px;">
+    <!-- Receipt Summary -->
+    <div class="receipt-card">
+      <div class="receipt-title">📋 ใบเสร็จและรายละเอียดวิชา</div>
+      <div class="receipt-row">
+        <span>ครูผู้สอน:</span>
+        <strong id="receiptTeacher" style="color:var(--text-main)">-</strong>
+      </div>
+      <div class="receipt-row">
+        <span>วิชาที่เลือกออกแบบ:</span>
+        <strong id="receiptClass" style="color:var(--text-main)">-</strong>
+      </div>
+      <div class="receipt-row">
+        <span>ยอดคำนวณทั้งหมด:</span>
+        <strong id="receiptCost" style="font-size:18px;color:#d97706">-</strong>
+      </div>
+      <div class="receipt-indicators" id="receiptIndicators">
+        <!-- Selected indicator tags listed here -->
+      </div>
+    </div>
+    
+    <!-- Generated Files -->
+    <div class="section-label">ดาวน์โหลดไฟล์สื่อการสอนสำเร็จรูป</div>
+    <div class="output-grid" id="outputList">
+      <!-- Cards rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Curriculum & Indicators Database ──
+const curriculums = {
+  science_m3: {
+    title: 'วิทยาศาสตร์ ม.3',
+    theme: 'science',
+    units: [
+      { id:'u1', name:'ระบบนิเวศ', color:'#1d9e75', indicators:[
+        { code:'ว 1.1 ม.3/1', text:'อธิบายปฏิสัมพันธ์ขององค์ประกอบของระบบนิเวศ' },
+        { code:'ว 1.1 ม.3/2', text:'ความสัมพันธ์ระหว่างสิ่งมีชีวิตในแหล่งที่อยู่เดียวกัน' },
+        { code:'ว 1.1 ม.3/3', text:'สร้างแบบจำลองการถ่ายทอดพลังงานในสายใยอาหาร' },
+        { code:'ว 1.1 ม.3/4', text:'ผู้ผลิต ผู้บริโภค และผู้ย่อยสลายในระบบนิเวศ' },
+        { code:'ว 1.1 ม.3/5', text:'การสะสมสารพิษในสิ่งมีชีวิตในโซ่อาหาร' },
+        { code:'ว 1.1 ม.3/6', text:'ตระหนักถึงความสัมพันธ์ของสิ่งมีชีวิตและสิ่งแวดล้อม' },
+      ]},
+      { id:'u2', name:'พันธุกรรมและวิวัฒนาการ', color:'#534ab7', indicators:[
+        { code:'ว 1.3 ม.3/1', text:'ความสัมพันธ์ระหว่างยีน ดีเอ็นเอ และโครโมโซม' },
+        { code:'ว 1.3 ม.3/2', text:'การถ่ายทอดลักษณะทางพันธุกรรม (แอลลีลเด่น-ด้อย)' },
+        { code:'ว 1.3 ม.3/3', text:'คำนวณอัตราส่วนจีโนไทป์และฟีโนไทป์รุ่นลูก' },
+        { code:'ว 1.3 ม.3/4', text:'ความแตกต่างของการแบ่งเซลล์แบบไมโทซิสและไมโอซิส' },
+        { code:'ว 1.3 ม.3/5', text:'การเปลี่ยนแปลงยีน/โครโมโซมและโรคทางพันธุกรรม' },
+      ]},
+      { id:'u3', name:'วัสดุและปฏิกิริยาเคมี', color:'#d85a30', indicators:[
+        { code:'ว 2.1 ม.3/3', text:'การเกิดปฏิกิริยาเคมีและการจัดเรียงอะตอมใหม่' },
+        { code:'ว 2.1 ม.3/4', text:'กฎทรงมวลโดยใช้หลักฐานเชิงประจักษ์' },
+        { code:'ว 2.1 ม.3/5', text:'ปฏิกิริยาดูดความร้อนและปฏิกิริยาคายความร้อน' },
+        { code:'ว 2.1 ม.3/6', text:'ปฏิกิริยาสนิมเหล็ก กรด-เบส การเผาไหม้ ฝนกรด' },
+      ]},
+      { id:'u4', name:'ไฟฟ้าและอิเล็กทรอนิกส์', color:'#185fa5', indicators:[
+        { code:'ว 2.3 ม.3/1', text:'ความสัมพันธ์ V, I, R และคำนวณ V = IR' },
+        { code:'ว 2.3 ม.3/3', text:'ใช้โวลต์มิเตอร์ แอมมิเตอร์วัดปริมาณทางไฟฟ้า' },
+        { code:'ว 2.3 ม.3/8', text:'คำนวณพลังงานไฟฟ้า W = Pt และค่าไฟฟ้า' },
+      ]},
+      { id:'u5', name:'คลื่นและแสง', color:'#d4537e', indicators:[
+        { code:'ว 2.3 ม.3/10', text:'การเกิดคลื่นและส่วนประกอบของคลื่น' },
+        { code:'ว 2.3 ม.3/11', text:'คลื่นแม่เหล็กไฟฟ้าและสเปกตรัม' },
+        { code:'ว 2.3 ม.3/13', text:'กฎการสะท้อนของแสง' },
+        { code:'ว 2.3 ม.3/15', text:'การหักเหของแสงและการกระจายแสงผ่านปริซึม' },
+      ]},
+      { id:'u6', name:'ระบบสุริยะและอวกาศ', color:'#636058', indicators:[
+        { code:'ว 3.1 ม.3/1', text:'การโคจรของดาวเคราะห์รอบดวงอาทิตย์ด้วยแรงโน้มถ่วง' },
+        { code:'ว 3.1 ม.3/2', text:'การเกิดฤดูและการเคลื่อนที่ปรากฏของดวงอาทิตย์' },
+        { code:'ว 3.1 ม.3/3', text:'การเกิดข้างขึ้นข้างแรมและน้ำขึ้นน้ำลง' },
+        { code:'ว 3.1 ม.3/4', text:'เทคโนโลยีอวกาศและโครงการสำรวจอวกาศ' },
+      ]},
+    ]
+  },
+  science_m2: {
+    title: 'วิทยาศาสตร์ ม.2',
+    theme: 'science',
+    units: [
+      { id:'m2_u1', name:'ระบบร่างกายมนุษย์', color:'#1d9e75', indicators:[
+        { code:'ว 1.2 ม.2/1', text:'ระบุอวัยวะและบรรยายหน้าที่ของอวัยวะในระบบหายใจ' },
+        { code:'ว 1.2 ม.2/2', text:'ตระหนักถึงความสำคัญของระบบขับถ่ายในการกำจัดของเสีย' },
+        { code:'ว 1.2 ม.2/3', text:'อธิบายการทำงานร่วมกันของระบบหมุนเวียนเลือดและระบบหายใจ' },
+      ]},
+      { id:'m2_u2', name:'สารละลายและการแยกสาร', color:'#d85a30', indicators:[
+        { code:'ว 2.1 ม.2/1', text:'อธิบายการแยกสารผสมโดยการกลั่นลำดับส่วนและโครมาโทกราฟี' },
+        { code:'ว 2.1 ม.2/2', text:'คำนวณความเข้มข้นของสารละลายเป็นร้อยละ' },
+      ]},
+      { id:'m2_u3', name:'แรงและการเคลื่อนที่', color:'#185fa5', indicators:[
+        { code:'ว 2.2 ม.2/1', text:'ออกแบบการทดลองและทดลองหาแรงลัพธ์ของแรงหลายแรง' },
+        { code:'ว 2.2 ม.2/2', text:'อธิบายแรงเสียดทานและแรงพยุงของของเหลว' },
+      ]},
+    ]
+  },
+  science_m1: {
+    title: 'วิทยาศาสตร์ ม.1',
+    theme: 'science',
+    units: [
+      { id:'m1_u1', name:'เซลล์และหน่วยของสิ่งมีชีวิต', color:'#1d9e75', indicators:[
+        { code:'ว 1.2 ม.1/1', text:'เปรียบเทียบรูปร่างและโครงสร้างเซลล์พืชและเซลล์สัตว์' },
+        { code:'ว 1.2 ม.1/2', text:'อธิบายหน้าที่ของส่วนประกอบโครงสร้างเซลล์' },
+      ]},
+      { id:'m1_u2', name:'สารบริสุทธิ์และสารผสม', color:'#d85a30', indicators:[
+        { code:'ว 2.1 ม.1/1', text:'อธิบายสมบัติทางกายภาพของสารบริสุทธิ์และสารผสม' },
+        { code:'ว 2.1 ม.1/2', text:'วิเคราะห์จุดเดือดและจุดหลอมเหลวของสารบริสุทธิ์และสารผสม' },
+      ]},
+    ]
+  },
+  science_p6: {
+    title: 'วิทยาศาสตร์ ป.6',
+    theme: 'science',
+    units: [
+      { id:'p6_u1', name:'สารอาหารและระบบย่อยอาหาร', color:'#1d9e75', indicators:[
+        { code:'ว 1.2 ป.6/1', text:'ระบุสารอาหารและบอกประโยชน์ของสารอาหารแต่ละประเภท' },
+        { code:'ว 1.2 ป.6/2', text:'อธิบายหน้าที่ของอวัยวะในระบบย่อยอาหารและแนวทางการดูแล' },
+      ]},
+      { id:'p6_u2', name:'สารรอบตัวและการแยกสาร', color:'#d85a30', indicators:[
+        { code:'ว 2.1 ป.6/1', text:'อธิบายการแยกสารผสมโดยการหยิบออก การกรอง การตกตะกอน' },
+      ]},
+      { id:'p6_u3', name:'สุริยุปราคาและจันทรุปราคา', color:'#636058', indicators:[
+        { code:'ว 3.1 ป.6/1', text:'สร้างแบบจำลองการเกิดสุริยุปราคาและจันทรุปราคา' },
+      ]},
+    ]
+  },
+  english_p6: {
+    title: 'ภาษาอังกฤษ ป.6',
+    theme: 'english',
+    units: [
+      { id:'en_p6_u1', name:'Listening & Reading Commands', color:'#6366f1', indicators:[
+        { code:'ต 1.1 ป.6/1', text:'ปฏิบัติตามคำสั่ง คำขอร้อง และคำแนะนำที่ฟังและอ่าน' },
+      ]},
+      { id:'en_p6_u2', name:'Conversations & Greetings', color:'#ec4899', indicators:[
+        { code:'ต 1.2 ป.6/1', text:'พูด/เขียนโต้ตอบในการสื่อสารระหว่างบุคคลอย่างเหมาะสม' },
+      ]},
+    ]
+  },
+  english_m2: {
+    title: 'ภาษาอังกฤษ ม.2',
+    theme: 'english',
+    units: [
+      { id:'en_m2_u1', name:'Reading and Speaking English', color:'#6366f1', indicators:[
+        { code:'ต 1.1 ม.2/1', text:'อ่านออกเสียงข้อความ ข่าว ประกาศ และบทร้อยกรองสั้นๆ' },
+      ]},
+      { id:'en_m2_u2', name:'Interpersonal Communication', color:'#ec4899', indicators:[
+        { code:'ต 1.2 ม.2/1', text:'สนทนาแลกเปลี่ยนข้อมูลเกี่ยวกับตนเองและเรื่องใกล้ตัว' },
+      ]},
+    ]
+  },
+  english_m3: {
+    title: 'ภาษาอังกฤษ ม.3',
+    theme: 'english',
+    units: [
+      { id:'en_m3_u1', name:'Listening & Reading Texts', color:'#6366f1', indicators:[
+        { code:'ต 1.1 ม.3/1', text:'ปฏิบัติตามคำขอร้อง คำชี้แจง คำอธิบายที่ฟังและอ่าน' },
+      ]},
+      { id:'en_m3_u2', name:'Writing & Speaking Exchange', color:'#ec4899', indicators:[
+        { code:'ต 1.2 ม.3/1', text:'พูดและเขียนโต้ตอบเพื่อแลกเปลี่ยนข้อมูลข่าวสารและสถานการณ์' },
+      ]},
+    ]
+  },
+  social_p6: {
+    title: 'สังคมศึกษา ป.6',
+    theme: 'social',
+    units: [
+      { id:'so_p6_u1', name:'หน้าที่พลเมืองและกฎหมายน่ารู้', color:'#f97316', indicators:[
+        { code:'ส 2.1 ป.6/1', text:'ปฏิบัติตนตามกฎหมายที่เกี่ยวข้องกับครอบครัวและชุมชน' },
+      ]},
+      { id:'so_p6_u2', name:'เศรษฐศาสตร์ผู้บริโภค', color:'#636058', indicators:[
+        { code:'ส 3.1 ป.6/1', text:'อธิบายบทบาทของผู้ผลิตที่มีความรับผิดชอบและผู้บริโภคที่มีคุณธรรม' },
+      ]},
+    ]
+  },
+  social_m3: {
+    title: 'สังคมศึกษา ม.3',
+    theme: 'social',
+    units: [
+      { id:'so_m3_u1', name:'กฎหมายแพ่งและอาญา', color:'#f97316', indicators:[
+        { code:'ส 2.1 ม.3/1', text:'อธิบายลักษณะการกระทำความผิดทางอาญาและทางแพ่ง' },
+      ]},
+      { id:'so_m3_u2', name:'กลไกราคาในเศรษฐกิจ', color:'#636058', indicators:[
+        { code:'ส 3.1 ม.3/1', text:'อธิบายกลไกราคาในระบบเศรษฐกิจและการกำหนดราคา' },
+      ]},
+    ]
+  },
+  history_p6: {
+    title: 'ประวัติศาสตร์ ป.6',
+    theme: 'social',
+    units: [
+      { id:'hi_p6_u1', name:'วิธีการทางประวัติศาสตร์', color:'#f97316', indicators:[
+        { code:'ส 4.1 ป.6/1', text:'อธิบายความสำคัญของวิธีการทางประวัติศาสตร์ในการศึกษาชุมชน' },
+      ]},
+      { id:'hi_p6_u2', name:'ยุครัตนโกสินทร์', color:'#636058', indicators:[
+        { code:'ส 4.2 ป.6/1', text:'อธิบายพัฒนาการของไทยสมัยรัตนโกสินทร์โดยสังเขป' },
+      ]},
+    ]
+  },
+  health_pe_p4: {
+    title: 'สุขศึกษาและพลศึกษา ป.4',
+    theme: 'health',
+    units: [
+      { id:'he_p4_u1', name:'พัฒนาการของร่างกาย', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ป.4/1', text:'อธิบายการเจริญเติบโตและพัฒนาการของร่างกายตามวัย' },
+      ]},
+      { id:'he_p4_u2', name:'เกมสร้างสรรค์และกีฬาไทย', color:'#ec4899', indicators:[
+        { code:'พ 3.1 ป.4/1', text:'ควบคุมตนเองในการเล่นเกม กิจกรรมเคลื่อนไหว และเล่นกีฬาพื้นเมือง' },
+      ]},
+    ]
+  },
+  health_pe_p5: {
+    title: 'สุขศึกษาและพลศึกษา ป.5',
+    theme: 'health',
+    units: [
+      { id:'he_p5_u1', name:'ระบบขับถ่ายและย่อยอาหาร', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ป.5/1', text:'อธิบายความสำคัญของระบบย่อยอาหารและระบบขับถ่าย' },
+      ]},
+      { id:'he_p5_u2', name:'การสร้างเสริมสมรรถภาพกาย', color:'#ec4899', indicators:[
+        { code:'พ 3.2 ป.5/1', text:'ออกกำลังกายอย่างมีรูปแบบและเล่นเกมเพื่อสร้างเสริมสมรรถภาพ' },
+      ]},
+    ]
+  },
+  health_pe_p6: {
+    title: 'สุขศึกษาและพลศึกษา ป.6',
+    theme: 'health',
+    units: [
+      { id:'he_p6_u1', name:'ระบบไหลเวียนเลือดและหายใจ', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ป.6/1', text:'อธิบายความสำคัญของระบบหมุนเวียนเลือดและระบบหายใจที่มีต่อสุขภาพ' },
+      ]},
+      { id:'he_p6_u2', name:'การเคลื่อนไหวและกีฬาสากล', color:'#ec4899', indicators:[
+        { code:'พ 3.1 ป.6/1', text:'แสดงทักษะการเคลื่อนไหวและเล่นกีฬาประเภททีมได้อย่างละหนึ่งชนิด' },
+      ]},
+    ]
+  },
+  health_pe_m1: {
+    title: 'สุขศึกษาและพลศึกษา ม.1',
+    theme: 'health',
+    units: [
+      { id:'he_m1_u1', name:'ระบบประสาทและต่อมไร้ท่อ', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ม.1/1', text:'อธิบายบทบาทของระบบประสาทและต่อมไร้ท่อที่มีผลต่อวัยรุ่น' },
+      ]},
+      { id:'he_m1_u2', name:'การออกกำลังกายและทักษะกีฬา', color:'#ec4899', indicators:[
+        { code:'พ 3.1 ม.1/1', text:'เล่นกีฬาไทยและสากลได้อย่างละหนึ่งชนิดโดยใช้ทักษะพื้นฐาน' },
+      ]},
+    ]
+  },
+  health_pe_m2: {
+    title: 'สุขศึกษาและพลศึกษา ม.2',
+    theme: 'health',
+    units: [
+      { id:'he_m2_u1', name:'พัฒนาการทางเพศในวัยรุ่น', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ม.2/1', text:'อธิบายการเปลี่ยนแปลงทางร่างกาย จิตใจ อารมณ์ และสังคมในวัยรุ่น' },
+      ]},
+      { id:'he_m2_u2', name:'วิทยาศาสตร์การเคลื่อนไหวในกีฬา', color:'#ec4899', indicators:[
+        { code:'พ 3.1 ม.2/1', text:'นำหลักวิทยาศาสตร์การเคลื่อนไหวไปใช้ในการวิเคราะห์และพัฒนาทักษะกีฬา' },
+      ]},
+    ]
+  },
+  health_pe_m3: {
+    title: 'สุขศึกษาและพลศึกษา ม.3',
+    theme: 'health',
+    units: [
+      { id:'he_m3_u1', name:'การเจริญเติบโตแต่ละช่วงวัย', color:'#0284c7', indicators:[
+        { code:'พ 1.1 ม.3/1', text:'เปรียบเทียบการเปลี่ยนแปลงทางร่างกายและอารมณ์ในแต่ละช่วงวัย' },
+      ]},
+      { id:'he_m3_u2', name:'ทักษะกีฬาประเภททีมขั้นสูง', color:'#ec4899', indicators:[
+        { code:'พ 3.1 ม.3/1', text:'เล่นกีฬาไทยและสากลโดยใช้ทักษะกติกาและเทคนิคทีมเวิร์ก' },
+      ]},
+    ]
+  },
+  arts_m1: {
+    title: 'ศิลปะ ม.1',
+    theme: 'arts',
+    units: [
+      { id:'ar_m1_u1', name:'ทัศนศิลป์และสิ่งแวดล้อม', color:'#ec4899', indicators:[
+        { code:'ศ 1.1 ม.1/1', text:'บรรยายความแตกต่างและความคล้ายของงานทัศนศิลป์และสิ่งแวดล้อม' },
+      ]},
+      { id:'ar_m1_u2', name:'ร้องและเล่นดนตรีเดี่ยว-วง', color:'#6366f1', indicators:[
+        { code:'ศ 2.1 ม.1/1', text:'ร้องเพลงและบรรเลงดนตรีเดี่ยวและดนตรีรวมวงด้วยเทคนิคแสดงออก' },
+      ]},
+    ]
+  },
+  arts_m2: {
+    title: 'ทัศนศิลป์ ม.2',
+    theme: 'arts',
+    units: [
+      { id:'ar_m2_u1', name:'ทัศนธาตุและอารมณ์ศิลป์', color:'#ec4899', indicators:[
+        { code:'ศ 1.1 ม.2/1', text:'อภิปรายเกี่ยวกับทัศนธาตุในการบรรยายอารมณ์และความรู้สึก' },
+      ]},
+      { id:'ar_m2_u2', name:'ศิลปวัฒนธรรมสะท้อนวิถีชีวิต', color:'#6366f1', indicators:[
+        { code:'ศ 1.2 ม.2/1', text:'ระบุและบรรยายวัฒนธรรมที่สะท้อนในงานทัศนศิลป์ปัจจุบัน' },
+      ]},
+    ]
+  },
+  computer_m1: {
+    title: 'คอมพิวเตอร์เพิ่มเติม ม.1',
+    theme: 'tech',
+    units: [
+      { id:'co_m1_u1', name:'วิทยาการคำนวณเบื้องต้น', color:'#0f766e', indicators:[
+        { code:'ว 4.2 ม.1/1', text:'ออกแบบอัลกอริทึมที่ใช้แนวคิดเชิงคำนวณในการแก้ปัญหา' },
+      ]},
+      { id:'co_m1_u2', name:'การเขียนโปรแกรมอย่างง่าย', color:'#1d9e75', indicators:[
+        { code:'ว 4.2 ม.1/2', text:'เขียนโปรแกรมแก้ปัญหาทางคณิตศาสตร์หรือวิทยาศาสตร์เบื้องต้น' },
+      ]},
+    ]
+  },
+  computer_m2: {
+    title: 'คอมพิวเตอร์เพิ่มเติม ม.2',
+    theme: 'tech',
+    units: [
+      { id:'co_m2_u1', name:'ลอจิกและฟังก์ชันในการแก้ปัญหา', color:'#0f766e', indicators:[
+        { code:'ว 4.2 ม.2/1', text:'ออกแบบอัลกอริทึมที่ใช้แนวคิดเชิงคำนวณแก้ปัญหาซับซ้อน' },
+      ]},
+    ]
+  },
+  computer_m3: {
+    title: 'คอมพิวเตอร์เพิ่มเติม ม.3',
+    theme: 'tech',
+    units: [
+      { id:'co_m3_u1', name:'การพัฒนาแอปพลิเคชัน', color:'#0f766e', indicators:[
+        { code:'ว 4.2 ม.3/1', text:'พัฒนาแอปพลิเคชันที่มีการบูรณาการตามแนวคิดเชิงคำนวณ' },
+      ]},
+    ]
+  },
+  tech_m3: {
+    title: 'ออกแบบและเทคโนโลยี ม.3',
+    theme: 'tech',
+    units: [
+      { id:'te_m3_u1', name:'การเปลี่ยนแปลงของเทคโนโลยี', color:'#f97316', indicators:[
+        { code:'ว 4.1 ม.3/1', text:'วิเคราะห์ความต้องการและการตัดสินใจเลือกใช้วัสดุในการสร้างชิ้นงาน' },
+      ]},
+    ]
+  },
+  career_p6: {
+    title: 'การงานอาชีพ ป.6',
+    theme: 'tech',
+    units: [
+      { id:'ca_p6_u1', name:'ทักษะการทำงานเพื่อการดำรงชีวิต', color:'#636058', indicators:[
+        { code:'ง 1.1 ป.6/1', text:'อภิปรายแนวทางการทำงานและปรับปรุงการทำงานแต่ละขั้นตอน' },
+      ]},
+    ]
+  },
+  anti_corr_m3: {
+    title: 'ป้องกันทุจริต ม.3',
+    theme: 'social',
+    units: [
+      { id:'ac_m3_u1', name:'การแยกแยะประโยชน์ส่วนตนและส่วนรวม', color:'#f97316', indicators:[
+        { code:'ปท. ม.3/1', text:'คิดแยกแยะระหว่างผลประโยชน์ส่วนตนและผลประโยชน์ส่วนรวมอย่างมีจิตสำนึก' },
+      ]},
+    ]
+  }
+};
+
+// ── Teacher Profiles & Schedules Database ──
+const teachers = [
+  {
+    id: 'suthep',
+    name: 'นายสุเทพ เงาเรือง',
+    role: 'วิชา: วิทยาศาสตร์ / คอมพิวเตอร์เพิ่มเติม',
+    avatar: '👨‍🏫',
+    avatarColor: '#1d9e75',
+    color: '#0f6e56',
+    schedule: [
+      // Mon (จันทร์)
+      [
+        { text: 'วิทยาศาสตร์ ม.2', key: 'science_m2', theme: 'science' },
+        { text: 'วิทยาศาสตร์ ม.3', key: 'science_m3', theme: 'science' },
+        { text: 'วิทยาศาสตร์ ป.6', key: 'science_p6', theme: 'science' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'คอมเพิ่มเติม ม.1', key: 'computer_m1', theme: 'tech' },
+        null,
+        { text: 'ชุมนุม ป.6', isActivity: true }
+      ],
+      // Tue (อังคาร)
+      [
+        { text: 'วิทยาศาสตร์ ป.6', key: 'science_p6', theme: 'science' },
+        { text: 'คอมเพิ่มเติม ม.2', key: 'computer_m2', theme: 'tech' },
+        { text: 'วิทยาศาสตร์ ม.3', key: 'science_m3', theme: 'science' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'วิทยาศาสตร์ ม.2', key: 'science_m2', theme: 'science' },
+        null,
+        { text: 'สาธารณประโยชน์ ป.6', isActivity: true }
+      ],
+      // Wed (พุธ)
+      [
+        { text: 'วิทยาศาสตร์ ป.6', key: 'science_p6', theme: 'science' },
+        { text: 'วิทยาศาสตร์ ม.1', key: 'science_m1', theme: 'science' },
+        { text: 'วิทยาศาสตร์ ม.2', key: 'science_m2', theme: 'science' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'คอมเพิ่มเติม ม.2', key: 'computer_m2', theme: 'tech' },
+        { text: 'ลดเวลาเรียน ป.6', isActivity: true },
+        { text: 'คอมเพิ่มเติม ม.1', key: 'computer_m1', theme: 'tech' }
+      ],
+      // Thu (พฤหัสบดี)
+      [
+        { text: 'วิทยาศาสตร์ ม.1', key: 'science_m1', theme: 'science' },
+        null,
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'คอมเพิ่มเติม ม.3', key: 'computer_m3', theme: 'tech' },
+        { text: 'แนะแนว ป.6', isActivity: true },
+        { text: 'ลูกเสือ ป.6', isActivity: true }
+      ],
+      // Fri (ศุกร์)
+      [
+        { text: 'วิทยาศาสตร์ ม.1', key: 'science_m1', theme: 'science' },
+        { text: 'วิทยาศาสตร์ ม.3', key: 'science_m3', theme: 'science' },
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'คอมเพิ่มเติม ม.3', key: 'computer_m3', theme: 'tech' },
+        { text: 'ลดเวลาเรียน ป.6', isActivity: true },
+        { text: 'สวดมนต์ ป.6', isActivity: true }
+      ]
+    ]
+  },
+  {
+    id: 'kanokwan',
+    name: 'นางสาวกนกวรรณ ยลพันธ์',
+    role: 'วิชา: สุขพละ / ศิลปะ / สังคมฯ / ประวัติศาสตร์',
+    avatar: '👩‍🏫',
+    avatarColor: '#534ab7',
+    color: '#3b3488',
+    schedule: [
+      // Mon (จันทร์)
+      [
+        null,
+        { text: 'สังคมฯ ป.6', key: 'social_p6', theme: 'social' },
+        { text: 'ทัศนศิลป์ ม.2', key: 'arts_m2', theme: 'arts' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'สุขศึกษา ป.5', key: 'health_pe_p5', theme: 'health' },
+        { text: 'ศิลปะ ม.1', key: 'arts_m1', theme: 'arts' },
+        { text: 'สุขศึกษา ม.3', key: 'health_pe_m3', theme: 'health' }
+      ],
+      // Tue (อังคาร)
+      [
+        { text: 'สุขพละ ป.1', key: 'health_pe_p4', theme: 'health' },
+        { text: 'สุขพละ ป.2', key: 'health_pe_p4', theme: 'health' },
+        { text: 'สังคมฯ ป.6', key: 'social_p6', theme: 'social' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'สุขพละ ป.4', key: 'health_pe_p4', theme: 'health' },
+        { text: 'สุขพละ ป.6', key: 'health_pe_p6', theme: 'health' },
+        { text: 'พละ ม.1', key: 'health_pe_m1', theme: 'health' }
+      ],
+      // Wed (พุธ)
+      [
+        null,
+        { text: 'สุขพละ ป.3', key: 'health_pe_p4', theme: 'health' },
+        { text: 'ประวัติศาสตร์ ป.6', key: 'history_p6', theme: 'social' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'พละ ม.1', key: 'health_pe_m1', theme: 'health' },
+        { text: 'พละ ป.5', key: 'health_pe_p5', theme: 'health' },
+        { text: 'พละ ป.6', key: 'health_pe_p6', theme: 'health' }
+      ],
+      // Thu (พฤหัสบดี)
+      [
+        null,
+        { text: 'สุขศึกษา ม.1', key: 'health_pe_m1', theme: 'health' },
+        { text: 'สุขศึกษา ม.2 <div class="sub-subject">ป้องกันทุจริต ป.6</div>', key: 'health_pe_m2', theme: 'health' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'ศิลปะ ม.1', key: 'arts_m1', theme: 'arts' },
+        { text: 'ทัศนศิลป์ ม.2', key: 'arts_m2', theme: 'arts' },
+        { text: 'ลูกเสือ ป.6', isActivity: true }
+      ],
+      // Fri (ศุกร์)
+      [
+        null,
+        null,
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'สุขพละ ป.4', key: 'health_pe_p4', theme: 'health' },
+        { text: 'พละ ม.2', key: 'health_pe_m2', theme: 'health' },
+        { text: 'สวดมนต์ ป.6', isActivity: true }
+      ]
+    ]
+  },
+  {
+    id: 'patcharaporn',
+    name: 'ครูพัชราภรณ์ ศรีสุข',
+    role: 'วิชา: ภาษาอังกฤษ / ออกแบบฯ / การงานอาชีพ',
+    avatar: '👩‍🏫',
+    avatarColor: '#d85a30',
+    color: '#b6421a',
+    schedule: [
+      // Mon (จันทร์)
+      [
+        { text: 'ภาษาอังกฤษ ม.2', key: 'english_m2', theme: 'english' },
+        null,
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        null,
+        null,
+        null
+      ],
+      // Tue (อังคาร)
+      [
+        null,
+        null,
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        null,
+        null,
+        null
+      ],
+      // Wed (พุธ)
+      [
+        null,
+        null,
+        null,
+        { text: 'พักกลางวัน', isLunch: true },
+        null,
+        null,
+        null
+      ],
+      // Thu (พฤหัสบดี)
+      [
+        { text: 'ภาษาอังกฤษ ป.6', key: 'english_p6', theme: 'english' },
+        { text: 'ภาษาอังกฤษ ม.3 <div class="sub-subject">สังคมฯ ม.3</div>', key: 'english_m3', theme: 'english' },
+        { text: 'ออกแบบ ม.3', key: 'tech_m3', theme: 'tech' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'ภาษาอังกฤษ ม.2', key: 'english_m2', theme: 'english' },
+        null,
+        { text: 'ลูกเสือ ม.3', isActivity: true }
+      ],
+      // Fri (ศุกร์)
+      [
+        { text: 'ภาษาอังกฤษ ม.2', key: 'english_m2', theme: 'english' },
+        { text: 'การงานอาชีพ ป.6', key: 'career_p6', theme: 'tech' },
+        { text: 'ภาษาอังกฤษ ม.3', key: 'english_m3', theme: 'english' },
+        { text: 'พักกลางวัน', isLunch: true },
+        { text: 'ภาษาอังกฤษ ป.6', key: 'english_p6', theme: 'english' },
+        { text: 'ป้องกันทุจริต ม.3', key: 'anti_corr_m3', theme: 'social' },
+        { text: 'สวดมนต์ ม.3', isActivity: true }
+      ]
+    ]
+  }
+];
+
+// ── Application State ──
+let currentTeacherIndex = 0;
+let activeSubjectKey = null;
+let selectedIndicators = new Set();
+let openUnitId = null;
+const PRICE_PER_INDICATOR = 39;
+
+// ── Init App ──
+function init() {
+  renderTeacherTabs();
+  changeTeacher(0);
+}
+
+// ── Render Teacher Selector Tabs ──
+function renderTeacherTabs() {
+  const tabsContainer = document.getElementById('teacherTabs');
+  tabsContainer.innerHTML = '';
+  
+  teachers.forEach((t, index) => {
+    const isActive = index === currentTeacherIndex;
+    const activeStyles = isActive 
+      ? `style="border-color: ${t.avatarColor}; background: ${t.avatarColor}10;"` 
+      : '';
+      
+    const tabEl = document.createElement('div');
+    tabEl.className = `teacher-tab ${isActive ? 'active' : ''}`;
+    tabEl.setAttribute('onclick', `changeTeacher(${index})`);
+    if (isActive) {
+      tabEl.style.borderColor = t.avatarColor;
+      tabEl.style.background = `${t.avatarColor}10`;
+    }
+    
+    tabEl.innerHTML = `
+      <div class="teacher-avatar" style="background: ${t.avatarColor}20; color: ${t.avatarColor}">
+        ${t.avatar}
+      </div>
+      <div class="teacher-info">
+        <span class="teacher-name">${t.name}</span>
+        <span class="teacher-desc">${t.role}</span>
+      </div>
+    `;
+    tabsContainer.appendChild(tabEl);
+  });
+}
+
+// ── Change Selected Teacher Profile ──
+function changeTeacher(index) {
+  currentTeacherIndex = index;
+  renderTeacherTabs();
+  
+  // Set Tag Status
+  const tag = document.getElementById('activeProfileTag');
+  tag.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${teachers[index].avatarColor}"></span> ${teachers[index].name}`;
+  
+  // Reset active subject view
+  activeSubjectKey = null;
+  
+  renderTimetable();
+  renderCurriculum();
+  updateCheckoutBar();
+}
+
+// ── Render Schedule Table ──
+function renderTimetable() {
+  const body = document.getElementById('timetableBody');
+  body.innerHTML = '';
+  
+  const schedule = teachers[currentTeacherIndex].schedule;
+  const days = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์'];
+  
+  days.forEach((dayName, dayIndex) => {
+    const tr = document.createElement('tr');
+    
+    // Day Label column
+    const th = document.createElement('th');
+    th.className = 'day-row-header';
+    th.textContent = dayName;
+    tr.appendChild(th);
+    
+    // Slot columns
+    const daySlots = schedule[dayIndex];
+    daySlots.forEach((slot, slotIndex) => {
+      const td = document.createElement('td');
+      
+      // Check if slot has value
+      if (!slot) {
+        td.innerHTML = `<div class="slot-card empty">-</div>`;
+      } else if (slot.isLunch) {
+        td.innerHTML = `<div class="slot-card lunch">พักกลางวัน</div>`;
+      } else if (slot.isActivity) {
+        td.innerHTML = `<div class="slot-card activity">${slot.text}</div>`;
+      } else {
+        // Interactive Class slot
+        const isActive = activeSubjectKey === slot.key;
+        const subjectClass = `subject-${slot.theme || 'science'}`;
+        
+        td.innerHTML = `
+          <div class="slot-card subject ${subjectClass} ${isActive ? 'active-subject' : ''}" 
+               onclick="selectSubject('${slot.key}')"
+               style="--active-subject-color: ${themeColor(slot.theme)}">
+            ${slot.text}
+          </div>
+        `;
+      }
+      tr.appendChild(td);
+    });
+    
+    body.appendChild(tr);
+  });
+}
+
+// Helper: Get color value by subject theme
+function themeColor(theme) {
+  const colors = {
+    science: '#1d9e75',
+    english: '#6366f1',
+    social: '#f97316',
+    health: '#0284c7',
+    arts: '#ec4899',
+    tech: '#0f766e'
+  };
+  return colors[theme] || '#1d9e75';
+}
+
+// ── Select Subject from Timetable slot ──
+function selectSubject(subjectKey) {
+  activeSubjectKey = subjectKey;
+  openUnitId = null; // reset expanded unit
+  
+  renderTimetable();
+  renderCurriculum();
+}
+
+// ── Render Curriculum & Indicators (Right Column) ──
+function renderCurriculum() {
+  const card = document.getElementById('curriculumCard');
+  
+  if (!activeSubjectKey || !curriculums[activeSubjectKey]) {
+    card.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">💡</div>
+        <h3>ยินดีต้อนรับสู่ Copilot</h3>
+        <p>กรุณาคลิกเลือกวิชาที่มีแถบสีในตารางเรียนเพื่อโหลดหน่วยการเรียนและตัวชี้วัด</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const curr = curriculums[activeSubjectKey];
+  const activeColor = themeColor(curr.theme);
+  
+  // Header HTML
+  let html = `
+    <div class="curriculum-card-header" style="border-top: 4px solid ${activeColor};">
+      <div class="curriculum-title">🎯 ${curr.title}</div>
+      <div class="curriculum-subtitle">โครงสร้างและตัวชี้วัดแกนกลาง พ.ศ. 2551 (ฉบับปรับปรุง 2560)</div>
+    </div>
+    <div class="unit-list" id="unitListContainer">
+  `;
+  
+  // Units List HTML
+  curr.units.forEach(u => {
+    const isOpen = openUnitId === u.id;
+    const themeBg = `${activeColor}08`;
+    const themeBorder = `${activeColor}20`;
+    
+    let indicatorsHtml = u.indicators.map(ind => {
+      const isSel = selectedIndicators.has(ind.code);
+      return `
+        <div class="indicator-row ${isSel ? 'selected' : ''}" 
+             onclick="toggleIndicator('${ind.code}')"
+             style="--unit-theme-color: ${activeColor}; --unit-theme-bg: ${activeColor}10; --unit-theme-border: ${activeColor}50;">
+          <div class="ind-check">${isSel ? '✓' : ''}</div>
+          <div>
+            <span class="ind-code" style="color: ${activeColor};">${ind.code}</span>
+            <span class="ind-text">${ind.text}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    html += `
+      <div class="unit-card ${isOpen ? 'active' : ''}" style="--unit-theme-color: ${activeColor};">
+        <div class="unit-header" onclick="toggleUnit('${u.id}')">
+          <div class="unit-dot" style="background: ${activeColor};"></div>
+          <span class="unit-name">${u.name}</span>
+          <span class="unit-meta">${u.indicators.length} ตัวชี้วัด</span>
+          <span class="unit-chevron">⌄</span>
+        </div>
+        <div class="indicators" style="display: ${isOpen ? 'flex' : 'none'};">
+          ${indicatorsHtml}
+        </div>
+      </div>
+    `;
+  });
+  
+  html += `</div>`;
+  card.innerHTML = html;
+}
+
+// ── Toggle Accordion Unit Card ──
+function toggleUnit(id) {
+  openUnitId = openUnitId === id ? null : id;
+  renderCurriculum();
+}
+
+// ── Toggle Indicator Selection ──
+function toggleIndicator(code) {
+  if (selectedIndicators.has(code)) {
+    selectedIndicators.delete(code);
+  } else {
+    selectedIndicators.add(code);
+  }
+  renderCurriculum();
+  updateCheckoutBar();
+}
+
+// ── Remove Chip indicator ──
+function removeIndicator(code) {
+  selectedIndicators.delete(code);
+  renderCurriculum();
+  updateCheckoutBar();
+}
+
+// ── Update Checkout Floating Bar ──
+function updateCheckoutBar() {
+  const bar = document.getElementById('checkoutBar');
+  const countEl = document.getElementById('selectedCount');
+  const priceEl = document.getElementById('checkoutPrice');
+  const chipsEl = document.getElementById('checkoutChips');
+  const btn = document.getElementById('btnCheckout');
+  
+  const size = selectedIndicators.size;
+  
+  if (size === 0) {
+    bar.classList.remove('visible');
+    btn.disabled = true;
+    return;
+  }
+  
+  bar.classList.add('visible');
+  btn.disabled = false;
+  
+  // Update numbers
+  countEl.textContent = size;
+  priceEl.innerHTML = `${size * PRICE_PER_INDICATOR}<small>บาท</small>`;
+  
+  // Render Chips
+  chipsEl.innerHTML = '';
+  selectedIndicators.forEach(code => {
+    const chip = document.createElement('div');
+    chip.className = 'checkout-chip';
+    chip.innerHTML = `
+      <span>${code}</span>
+      <button onclick="event.stopPropagation(); removeIndicator('${code}')">✕</button>
+    `;
+    chipsEl.appendChild(chip);
+  });
+}
+
+// ── Handle Generation (Transition to Output Page) ──
+function handleGenerate() {
+  if (selectedIndicators.size === 0) return;
+  
+  const teacher = teachers[currentTeacherIndex];
+  const curr = curriculums[activeSubjectKey];
+  const totalCost = selectedIndicators.size * PRICE_PER_INDICATOR;
+  
+  // Fill Receipt Summary
+  document.getElementById('receiptTeacher').textContent = teacher.name;
+  document.getElementById('receiptClass').textContent = curr.title;
+  document.getElementById('receiptCost').innerHTML = `${totalCost} บาท <span style="font-size:12px;font-weight:normal;color:var(--text-muted);">(${selectedIndicators.size} ตัวชี้วัด × 39 บาท)</span>`;
+  
+  // Indicators tags list
+  const tagsContainer = document.getElementById('receiptIndicators');
+  tagsContainer.innerHTML = '';
+  selectedIndicators.forEach(code => {
+    const tag = document.createElement('span');
+    tag.style.display = 'inline-block';
+    tag.style.background = '#ffffff';
+    tag.style.border = '1px solid #ffedd5';
+    tag.style.color = '#c2410c';
+    tag.style.fontSize = '12px';
+    tag.style.fontWeight = 'bold';
+    tag.style.padding = '3px 8px';
+    tag.style.borderRadius = '6px';
+    tag.style.margin = '4px';
+    tag.textContent = code;
+    tagsContainer.appendChild(tag);
+  });
+  
+  // Render Output Cards
+  const files = [
+    { icon: '📋', title: 'แผนการจัดกิจกรรมการเรียนรู้แบบโครงสร้าง 5E', desc: 'แผนกิจกรรมจำนวน 3 คาบต่อตัวชี้วัด ครอบคลุมสาระแกนกลาง จุดประสงค์ปลายทาง ขั้นตอนนำ/สอน/สรุป และประเมินผล' },
+    { icon: '📝', title: 'ใบงานอัจฉริยะ (Worksheet) 2 ระดับ', desc: 'ไฟล์กิจกรรม/คำถามวิเคราะห์คิดขั้นสูง แยกเป็นระดับพื้นฐานและทักษะประยุกต์ สามารถปริ้นท์ให้ผู้เรียนทำได้ทันที' },
+    { icon: '❓', title: 'คลังข้อสอบท้ายหน่วย 20 ข้อ (ปรนัย 4 ตัวเลือก)', desc: 'รวมข้อสอบแยกวิเคราะห์รายตัวชี้วัด ระดับความยาก Easy/Medium/Hard ปรุงแต่งเนื้อหาตามแนวทางข้อสอบ O-NET' },
+    { icon: '✅', title: 'เฉลยและคัมภีร์อธิบายคำตอบแนวคิดเชิงลึก', desc: 'คู่มือเฉลยข้อสอบและแบบฝึกหัดอย่างละเอียด มีจุดเน้นให้คำอธิบายเหตุผลและข้อควรระวังสำหรับครูผู้สอน' },
+    { icon: '📊', title: 'เกณฑ์ประเมินชิ้นงานรูบริกประเมินพฤติกรรม (Rubric)', desc: 'แบบฟอร์มประเมินผลแบ่งตามมาตรฐาน 4 ระดับ (ดีมาก/ดี/พอใช้/ปรับปรุง) สำหรับวัดผลพฤติกรรมผู้เรียนส่งผลงานบริหารโรงเรียน' }
+  ];
+  
+  const outputList = document.getElementById('outputList');
+  outputList.innerHTML = files.map(f => `
+    <div class="output-card">
+      <div class="output-info-group">
+        <div class="output-icon">${f.icon}</div>
+        <div class="output-details">
+          <span class="output-title">${f.title}</span>
+          <span class="output-desc">${f.desc}</span>
+        </div>
+      </div>
+      <div class="output-action">
+        <span class="coming-soon">✨ PDF & DOCX (เร็วๆ นี้)</span>
+        <button class="btn-dl" onclick="alert('ดาวน์โหลดไฟล์ ${f.title} สำเร็จ!')">ดาวน์โหลด</button>
+      </div>
+    </div>
+  `).join('');
+  
+  // Transition views
+  document.getElementById('mainPage').style.display = 'none';
+  document.getElementById('generatePage').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// ── Back Button ──
+function goBack() {
+  document.getElementById('generatePage').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// Run initializer on load
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

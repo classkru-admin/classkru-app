@@ -1,0 +1,6 @@
+{
+  "root": "classroom-app",
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" }
+  ]
+}
