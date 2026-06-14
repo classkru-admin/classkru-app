@@ -1,0 +1,48 @@
+/* ════════════════════════════════════════════════════════════
+   ClassKru — Design System กลาง (Single Source of Truth)
+   แก้สี/ขนาด/ฟอนต์ ทั้งระบบ → แก้ที่ไฟล์นี้ที่เดียว
+   ทุกหน้า <link> ไฟล์นี้ แล้วใช้ var(--xxx)
+
+   ⚠️ ค่าทั้งหมดดึงจากของเดิมเป๊ะ — ไม่เปลี่ยนหน้าตา
+   มี alias ชื่อเก่า (--pk/--pbg/--pbd) เพื่อไม่ต้องแก้ HTML เดิม
+   ════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ─── สีหลัก (Primary / แบรนด์เขียว) ─── */
+  --primary:    #1d9e75;   /* เขียวหลัก */
+  --primary-dk: #0f6e56;   /* เขียวเข้ม (hover/active) */
+  --primary-bg: #f0fdf4;   /* เขียวอ่อน (พื้นหลัง) */
+  --primary-bd: #86efac;   /* เขียวขอบ (border) */
+
+  /* alias ชื่อเก่า — ห้ามลบ (HTML เดิมยังเรียกอยู่) */
+  --pk:  var(--primary-dk);
+  --pbg: var(--primary-bg);
+  --pbd: var(--primary-bd);
+
+  /* ─── สีสถานะเช็คชื่อ ─── */
+  --late:    #f59e0b;  --late-bg:   #fffbeb;  --late-bd:   #fcd34d;  /* มาสาย เหลือง */
+  --absent:  #ef4444;  --absent-bg: #fef2f2;  --absent-bd: #fca5a5;  /* ขาด แดง */
+  --leave:   #6366f1;  --leave-bg:  #eef2ff;  --leave-bd:  #a5b4fc;  /* ลา น้ำเงิน-ม่วง */
+
+  /* ─── สีพื้น / ข้อความ / เส้น ─── */
+  --bg:     #f5f7fa;   /* พื้นหลังหน้า */
+  --card:   #fff;      /* การ์ด */
+  --text:   #0f172a;   /* ข้อความหลัก */
+  --muted:  #5b6675;   /* ข้อความรอง */
+  --border: #e8edf2;   /* เส้นขอบ */
+
+  /* ─── เงา ─── */
+  --sh:    0 2px 8px rgba(0,0,0,.07);    /* เงาเบา */
+  --sh-md: 0 4px 16px rgba(0,0,0,.10);   /* เงากลาง */
+  --sh-lg: 0 8px 32px rgba(0,0,0,.13);   /* เงาหนัก */
+
+  /* ─── อื่น ๆ ─── */
+  --radius:   16px;                          /* มุมโค้งการ์ด */
+  --tr:       all .18s cubic-bezier(.4,0,.2,1); /* transition มาตรฐาน */
+  --sidebar-w: 200px;                        /* ความกว้าง sidebar */
+  --safe-bottom: env(safe-area-inset-bottom, 0px); /* ขอบล่าง iOS */
+
+  /* ─── ขนาดข้อความ (ตาม design_typography) ─── */
+  --fz-title: 14px;   /* หัวข้อ — ใช้คู่ font-weight 800 */
+  --fz-body:  14px;   /* ข้อความรอง — ใช้คู่ font-weight 400 */
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เช็คชื่อ (ออกแบบใหม่ทั้งหน้า) — ClassKru</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="ck-theme.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
+.layout{display:flex;min-height:100vh;}
+
+/* ── Sidebar (เหมือนเดิม) ── */
+.sb{width:240px;background:#fff;border-right:1px solid var(--border);flex-shrink:0;padding:0;}
+.sb-logo{height:90px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);}
+.sb-logo b{font-size:22px;color:var(--primary);font-weight:800;}
+.sb-sec{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:18px 20px 6px;}
+.sb-link{display:flex;align-items:center;gap:11px;padding:11px 20px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;border-left:3px solid transparent;transition:var(--tr);}
+.sb-link:hover{background:#f8fafc;}
+.sb-link.active{background:#f0fdf4;color:var(--primary);border-left-color:var(--primary);}
+.sb-link svg{stroke:currentColor;}
+
+/* ── Main ── */
+.main{flex:1;padding:28px 36px 50px;max-width:880px;}
+.hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.hd-title{font-size:19px;font-weight:800;}
+.hd-sub{font-size:13px;color:#94a3b8;margin-bottom:20px;}
+.date-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:var(--tr);}
+.date-pill:hover{border-color:var(--primary);}
+.date-pill svg{stroke:var(--primary);}
+
+/* summary chips — สดใส */
+.chips{display:flex;gap:10px;margin-bottom:26px;}
+.chip{display:flex;align-items:center;gap:7px;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:8px 14px;font-size:13px;font-weight:700;}
+.chip b{font-size:15px;}
+.chip.total{color:#475569;}
+.chip.done{color:#16a34a;background:#dcfce7;border-color:#86efac;}
+.chip.left{color:#ea580c;background:#ffedd5;border-color:#fdba74;}
+
+.group-label{font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px;}
+
+/* การ์ดห้อง — แบบ B สดใส */
+.rooms{display:flex;flex-direction:column;gap:11px;margin-bottom:28px;}
+.rc{background:#fff;border:1px solid #eef1f5;border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 8px rgba(15,23,42,.05);}
+.rc:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(15,23,42,.11);}
+.rc:active{transform:scale(.985);}
+.rc-dot{width:12px;height:12px;border-radius:50%;background:var(--_c);box-shadow:0 0 0 4px var(--_cl);flex-shrink:0;}
+.rc-body{flex:1;min-width:0;}
+.rc-subj{font-size:14px;font-weight:800;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rc-meta{font-size:12px;color:#94a3b8;font-weight:500;margin-top:2px;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.rc-time{color:#64748b;font-weight:600;}
+/* badge สถานะ */
+.rc-badge{flex-shrink:0;font-size:11.5px;font-weight:800;padding:6px 13px;border-radius:20px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;transition:all .2s;}
+.rc-badge.todo{color:#ea580c;background:#fff7ed;border:1.5px solid #fed7aa;}
+.rc:hover .rc-badge.todo{background:#ea580c;color:#fff;border-color:#ea580c;}
+.rc-badge.done{color:#15803d;background:#f0fdf4;border:1.5px solid #86efac;}
+
+.note{font-size:12.5px;color:#64748b;text-align:center;padding-top:10px;}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sb">
+    <div class="sb-logo"><b>ClassKru</b></div>
+    <div class="sb-sec">เมนู</div>
+    <div class="sb-link"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1z"/></svg>หน้าหลัก</div>
+    <div class="sb-link"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>ตารางสอน</div>
+    <div class="sb-link active"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ</div>
+    <div class="sb-link"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 9l-5 5-3-3-4 4"/></svg>สถิติ</div>
+    <div class="sb-link"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.5 2h-5l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5L3 11a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h5l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5-2-1.5a7 7 0 00.1-1z"/></svg>ตั้งค่า</div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="hd">
+      <div>
+        <div class="hd-title">เลือกห้องที่จะเช็คชื่อ</div>
+      </div>
+      <div class="date-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        จันทร์ที่ 15 มิ.ย. 2569
+      </div>
+    </div>
+    <div class="hd-sub">แตะการ์ดห้องเพื่อเริ่มเช็คชื่อ</div>
+
+    <div class="chips">
+      <span class="chip total">ทั้งหมด <b>5</b> ห้อง</span>
+      <span class="chip done">เช็กแล้ว <b>1</b></span>
+      <span class="chip left">เหลือ <b>4</b></span>
+    </div>
+
+    <div class="group-label">📅 มีคาบสอนวันนี้</div>
+    <div class="rooms">
+      <div class="rc" style="--_c:#22c55e;--_cl:#dcfce7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">วิทยาศาสตร์ ม.1/1</div>
+          <div class="rc-meta"><span class="rc-time">08:30–09:20</span> · 30 คน</div>
+        </div>
+        <span class="rc-badge done"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>เช็กแล้ว</span>
+      </div>
+      <div class="rc" style="--_c:#22c55e;--_cl:#dcfce7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">วิทยาศาสตร์ ม.1/2</div>
+          <div class="rc-meta"><span class="rc-time">09:20–10:10</span> · 30 คน</div>
+        </div>
+        <span class="rc-badge todo">เช็คชื่อ ›</span>
+      </div>
+      <div class="rc" style="--_c:#22c55e;--_cl:#dcfce7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">สุขศึกษา ม.2/1</div>
+          <div class="rc-meta"><span class="rc-time">10:20–11:10</span> · 30 คน</div>
+        </div>
+        <span class="rc-badge todo">เช็คชื่อ ›</span>
+      </div>
+      <div class="rc" style="--_c:#22c55e;--_cl:#dcfce7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">พลศึกษา ม.3/1</div>
+          <div class="rc-meta"><span class="rc-time">13:00–13:50</span> · 30 คน</div>
+        </div>
+        <span class="rc-badge todo">เช็คชื่อ ›</span>
+      </div>
+    </div>
+
+    <div class="group-label">ห้องทั้งหมด</div>
+    <div class="rooms">
+      <div class="rc" style="--_c:#f59e0b;--_cl:#fef3c7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">คณิตศาสตร์ ป.6/1</div>
+          <div class="rc-meta">30 คน</div>
+        </div>
+        <span class="rc-badge todo">เช็คชื่อ ›</span>
+      </div>
+      <div class="rc" style="--_c:#22c55e;--_cl:#dcfce7;">
+        <div class="rc-dot"></div>
+        <div class="rc-body">
+          <div class="rc-subj">พลศึกษา ม.3/2</div>
+          <div class="rc-meta">30 คน</div>
+        </div>
+        <span class="rc-badge todo">เช็คชื่อ ›</span>
+      </div>
+    </div>
+
+    <div class="note">ออกแบบใหม่ทั้งหน้า — แบบ B · เอาเมาส์ชี้/คลิกการ์ดดู · ของจริงไม่ถูกแตะ</div>
+  </main>
+</div>
+</body>
+</html>

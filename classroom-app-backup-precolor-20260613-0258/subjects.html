@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>วิชา / ห้องเรียน — ClassKru</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="ck-theme.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-/* สี/ขนาดมาจาก ck-theme.css — override เฉพาะเงาเบาของหน้านี้ */
-:root{ --sh:0 1px 4px rgba(0,0,0,.06); }
+:root{
+  --primary:#1d9e75;--pk:#0f6e56;--pbg:#f0fdf4;--pbd:#86efac;
+  --bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e8edf2;
+  --sh:0 1px 4px rgba(0,0,0,.06);--sh-md:0 4px 16px rgba(0,0,0,.10);
+  --tr:all .18s cubic-bezier(.4,0,.2,1);--sidebar-w:260px;
+}
 html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 .btn{font-family:'Sarabun',sans-serif;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:var(--tr);border-radius:12px;}
 .btn:active{transform:scale(.96);}
@@ -92,14 +95,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 .m-title{font-size:16px;font-weight:800;flex:1;}
 .m-add{width:34px;height:34px;border-radius:10px;border:none;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
 .m-add svg{width:20px;height:20px;stroke:#fff;stroke-width:2.2;fill:none;stroke-linecap:round;}
-.m-scroll{flex:1;overflow-y:auto;padding:16px 14px calc(76px + env(safe-area-inset-bottom,0));}
-.m-bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);height:62px;display:flex;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06);padding-bottom:env(safe-area-inset-bottom,0);}
-.m-bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;font-family:'Sarabun',sans-serif;padding:6px 0 4px;}
-.m-bn:active{opacity:.6;}
-.m-bn svg{width:22px;height:22px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-.m-bn span{font-size:10px;font-weight:600;color:#9ca3af;}
-.m-bn.active svg{stroke:var(--primary);}
-.m-bn.active span{color:var(--primary);font-weight:700;}
+.m-scroll{flex:1;overflow-y:auto;padding:16px 14px 30px;}
 
 /* ══ DESKTOP ══ */
 .d-wrap{display:none;}
@@ -130,33 +126,10 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 <div class="m-wrap">
   <div class="m-topbar">
     <button class="m-back" onclick="go('settings.html')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <div class="m-title">ห้องเรียน</div>
+    <div class="m-title">วิชา / ห้องเรียน</div>
     <button class="m-add" onclick="openCreate()" title="เพิ่มวิชา"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
   <div class="m-scroll" id="m-content"></div>
-  <nav class="m-bottom-nav">
-    <button class="m-bn" onclick="go('index.html')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-      <span>หน้าหลัก</span>
-    </button>
-    <button class="m-bn" onclick="go('schedule.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-      <span>ตารางสอน</span>
-    </button>
-    <button class="m-bn"  onclick="go('attendance.html')">
-      
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
-      <span>เช็คชื่อ</span>
-    </button>
-    <button class="m-bn" onclick="go('report.html')">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <span>สถิติ</span>
-    </button>
-    <button class="m-bn active" onclick="go('settings.html')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span>ตั้งค่า</span>
-    </button>
-  </nav>
 </div>
 
 <!-- ══ DESKTOP ══ -->
@@ -165,9 +138,9 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
     <div class="d-sb-logo"><img src="classkru-logo.png" alt="ClassKru" style="height:68px;width:auto;"></div>
     <div class="d-sb-sec">เมนู</div>
     <div class="d-sb-link" onclick="go('index.html')"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก</div>
-    <div class="d-sb-link" onclick="go('schedule.html')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>ตารางสอน</div>
+    <div class="d-sb-link" onclick="go('overview.html')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>ภาพรวม</div>
     <div class="d-sb-link" onclick="go('attendance.html')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ</div>
-    <div class="d-sb-link" onclick="go('report.html')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>สถิติ</div>
+    <div class="d-sb-link" onclick="go('student.html?class=m31&id=0')"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg>นักเรียน</div>
     <div class="d-sb-link active" onclick="go('settings.html')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>ตั้งค่า</div>
     <div class="d-sb-spacer"></div>
     <div class="d-sb-date" id="d-date-sb"></div>
@@ -203,7 +176,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
     <!-- 2.1 ข้อมูลพื้นฐาน -->
     <div class="field">
       <label class="field-label">วิชา</label>
-      <input class="input" id="f-subject" placeholder="เช่น สุขศึกษา, พลศึกษา" oninput="autoColorFromSubject()">
+      <input class="input" id="f-subject" placeholder="เช่น สุขศึกษา, พลศึกษา">
     </div>
     <div class="row2">
       <div class="field">
@@ -216,8 +189,10 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
       </div>
     </div>
     <div class="field">
-      <label class="field-label">สีประจำวิชา <span class="opt">เลือกเองได้</span></label>
-      <div class="color-row" id="color-picker-row"></div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);">
+        <span style="width:14px;height:14px;border-radius:4px;flex-shrink:0;" id="auto-color-dot"></span>
+        สีกำหนดอัตโนมัติตามระดับชั้น (ประถม·ม.ต้น·ม.ปลาย)
+      </div>
     </div>
 
     <!-- Danger zone (เฉพาะตอนแก้) -->
@@ -265,50 +240,27 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
     <button class="modal-close" onclick="closeStuModal()">✕</button>
   </div>
   <div class="modal-body">
-    <!-- tabs (แสดงเฉพาะตอนเพิ่ม ไม่แก้) -->
-    <div id="sf-tabs" style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:16px;">
-      <button id="sf-tab-single" onclick="setStuTab('single')" style="flex:1;padding:8px;border:none;background:none;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:var(--primary);border-bottom:2px solid var(--primary);margin-bottom:-2px;cursor:pointer;">ทีละคน</button>
-      <button id="sf-tab-bulk" onclick="setStuTab('bulk')" style="flex:1;padding:8px;border:none;background:none;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;">วางรายชื่อ</button>
-    </div>
-
-    <!-- single -->
-    <div id="sf-pane-single">
-      <div class="row2">
-        <div class="field">
-          <label class="field-label">เลขที่</label>
-          <input class="input" id="sf-no" type="number" placeholder="เลขที่">
-        </div>
-        <div class="field" style="grid-column:span 1;">
-          <label class="field-label">ชื่อ</label>
-          <input class="input" id="sf-first" placeholder="ชื่อ">
-        </div>
-      </div>
+    <div class="row2">
       <div class="field">
-        <label class="field-label">นามสกุล</label>
-        <input class="input" id="sf-last" placeholder="นามสกุล">
+        <label class="field-label">เลขที่</label>
+        <input class="input" id="sf-no" type="number" placeholder="เลขที่">
       </div>
-      <!-- ย้ายห้อง (เฉพาะตอนแก้) -->
-      <div class="field" id="sf-move-block" style="display:none;">
-        <label class="field-label">ย้ายไปห้อง <span class="opt">(ไม่บังคับ)</span></label>
-        <select class="input" id="sf-move"><option value="">— อยู่ห้องเดิม —</option></select>
-      </div>
-      <button class="btn btn-primary" id="sf-save" onclick="saveStudent()" style="width:100%;margin-top:18px;padding:13px;">บันทึก</button>
-      <button id="sf-delete" onclick="deleteStudentConfirm()" style="display:none;width:100%;margin-top:8px;padding:11px;background:#fff;border:1.5px solid #f87171;color:#dc2626;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;border-radius:12px;cursor:pointer;">ลบนักเรียนคนนี้</button>
-    </div>
-
-    <!-- bulk -->
-    <div id="sf-pane-bulk" style="display:none;">
-      <div class="field">
-        <label class="field-label">วางรายชื่อทีเดียว</label>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">1 คน/บรรทัด · รองรับ: <code>1 สมชาย ใจดี</code> หรือ <code>สมชาย ใจดี</code></div>
-        <textarea class="input" id="sf-bulk-raw" rows="8" placeholder="1 สมชาย ใจดี&#10;2 สมหญิง ดีมาก&#10;3 ประหยัด มีสุข" style="resize:vertical;font-size:13px;line-height:1.6;"></textarea>
-      </div>
-      <div id="sf-bulk-preview" style="font-size:12px;color:var(--muted);margin-bottom:4px;min-height:18px;"></div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="btn btn-outline" onclick="previewBulk()" style="flex:1;">ตรวจสอบรายชื่อ</button>
-        <button class="btn btn-primary" onclick="saveBulkStudents()" style="flex:2;justify-content:center;">บันทึกทั้งหมด</button>
+      <div class="field" style="grid-column:span 1;">
+        <label class="field-label">ชื่อ</label>
+        <input class="input" id="sf-first" placeholder="ชื่อ">
       </div>
     </div>
+    <div class="field">
+      <label class="field-label">นามสกุล</label>
+      <input class="input" id="sf-last" placeholder="นามสกุล">
+    </div>
+    <!-- ย้ายห้อง (เฉพาะตอนแก้) -->
+    <div class="field" id="sf-move-block" style="display:none;">
+      <label class="field-label">ย้ายไปห้อง <span class="opt">(ไม่บังคับ)</span></label>
+      <select class="input" id="sf-move"><option value="">— อยู่ห้องเดิม —</option></select>
+    </div>
+    <button class="btn btn-primary" id="sf-save" onclick="saveStudent()" style="width:100%;margin-top:18px;padding:13px;">บันทึก</button>
+    <button id="sf-delete" onclick="deleteStudentConfirm()" style="display:none;width:100%;margin-top:8px;padding:11px;background:#fff;border:1.5px solid #f87171;color:#dc2626;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;border-radius:12px;cursor:pointer;">ลบนักเรียนคนนี้</button>
   </div>
 </div>
 
@@ -318,8 +270,8 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 function go(url){ window.location.href=url; }
 function showToast(msg){const t=document.getElementById('toast-el');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);}
 
-const LEVEL_COLORS = (window.CKService&&CKService.LEVEL_COLORS)||{primary:{icon:'#d99a4e'},junior:{icon:'#6cae8f'},senior:{icon:'#7b9bb5'}};
-const PALETTE=['#4a9b94','#6cae8f','#7b9bb5','#d99a4e','#d98a9e','#9d8ec4','#3f8c84','#c98aa6'];
+const LEVEL_COLORS = (window.CKService&&CKService.LEVEL_COLORS)||{primary:{icon:'#ca8a04'},junior:{icon:'#16a34a'},senior:{icon:'#2563eb'}};
+const PALETTE=['#1d9e75','#16a34a','#2563eb','#ca8a04','#dc2626','#7c3aed','#0891b2','#db2777'];
 
 let _sections=[];
 let _counts={};
@@ -346,7 +298,7 @@ function listHtml(){
   }
   let html=`<div class="subj-list">`;
   _sections.forEach(s=>{
-    const color=(window.CKService&&CKService.pastelize?CKService.pastelize(s.color):s.color)||LEVEL_COLORS[s.level||'junior'].icon;
+    const color=s.color||LEVEL_COLORS[s.level||'junior'].icon;
     const periods=_counts[s.id]||0;
     html+=`<div class="subj-card" onclick="openEdit('${s.id}')">
       <div class="subj-dot" style="background:${color}">${BOOK_SVG}</div>
@@ -371,50 +323,19 @@ function renderList(){
   if(dc) dc.innerHTML=html;
 }
 
-// สี default ตามหมวดวิชา
-const SUBJECT_DEFAULT_COLORS = [
-  {label:'วิทยาศาสตร์', keywords:['วิทย','science','ฟิสิกส์','เคมี','ชีวะ','ชีววิทยา'], color:'#4a9b94'},
-  {label:'คณิตศาสตร์',  keywords:['คณิต','math'],                                       color:'#7b9bb5'},
-  {label:'ภาษาไทย',     keywords:['ภาษาไทย','ไทย'],                                     color:'#d99a4e'},
-  {label:'ภาษาอังกฤษ',  keywords:['อังกฤษ','english'],                                  color:'#9d8ec4'},
-  {label:'สังคมศึกษา',  keywords:['สังคม','ประวัติ','ภูมิศาสตร์'],                      color:'#c98aa6'},
-  {label:'พละ/สุขศึกษา',keywords:['พล','สุขศึกษา','พลศึกษา'],                           color:'#6cae8f'},
-  {label:'ศิลปะ',       keywords:['ศิลป','ดนตรี','นาฏ'],                                color:'#d98a9e'},
-  {label:'การงานอาชีพ', keywords:['การงาน','อาชีพ','คอมพิวเตอร์','เทคโนโลยี'],          color:'#8fa8c8'},
-];
-const SWATCHES = ['#4a9b94','#7b9bb5','#d99a4e','#9d8ec4','#c98aa6','#6cae8f','#d98a9e','#8fa8c8','#e07b54','#5b8dd9'];
-
-function defaultColorFromSubject(name){
-  if(!name) return SWATCHES[0];
-  const n=name.toLowerCase();
-  for(const s of SUBJECT_DEFAULT_COLORS){
-    if(s.keywords.some(k=>n.includes(k))) return s.color;
-  }
-  return SWATCHES[0];
+// สีมาจาก level อัตโนมัติ — ไม่ให้ครูเลือกเอง (เลิกช่อง 8 สี)
+function autoColorFromGrade(){
+  const grade=document.getElementById('f-grade').value.trim();
+  const level=gradeLevel(grade);
+  _selColor=(LEVEL_COLORS[level]||LEVEL_COLORS.junior).icon;
+  const dot=document.getElementById('auto-color-dot');
+  if(dot) dot.style.background=_selColor;
+  return _selColor;
 }
-
-function renderColorPicker(){
-  const row=document.getElementById('color-picker-row');
-  if(!row) return;
-  row.innerHTML=SWATCHES.map(c=>`
-    <div class="color-dot${_selColor===c?' sel':''}" style="background:${c}"
-      onclick="pickColor('${c}')"></div>`).join('');
-}
-
-function pickColor(c){
-  _selColor=c;
-  renderColorPicker();
-}
-
-function autoColorFromSubject(){
-  const name=document.getElementById('f-subject').value.trim();
-  if(name) _selColor=defaultColorFromSubject(name);
-  renderColorPicker();
-}
-function renderColors(){ renderColorPicker(); }
+function renderColors(){ autoColorFromGrade(); }
 
 function openCreate(){
-  _editId=null;_selColor=SWATCHES[0];
+  _editId=null;_selColor=PALETTE[0];
   document.getElementById('modal-title').textContent='เพิ่มวิชา';
   document.getElementById('f-subject').value='';
   document.getElementById('f-grade').value='';
@@ -422,14 +343,13 @@ function openCreate(){
   document.getElementById('danger-block').style.display='none';
   document.getElementById('modal-tabs').style.display='none';
   switchTab('info');
-  renderColorPicker();
   renderColors();openModal();
 }
 
 function openEdit(id){
   const s=_sections.find(x=>x.id===id);
   if(!s) return;
-  _editId=id;_selColor=s.color||defaultColorFromSubject(s.subject)||SWATCHES[0];
+  _editId=id;_selColor=s.color||LEVEL_COLORS[s.level||'junior'].icon;
   document.getElementById('modal-title').textContent=`${s.subject} ${s.grade}/${s.room}`;
   document.getElementById('f-subject').value=s.subject||'';
   document.getElementById('f-grade').value=s.grade||'';
@@ -437,7 +357,6 @@ function openEdit(id){
   document.getElementById('danger-block').style.display='';
   document.getElementById('modal-tabs').style.display='flex';
   switchTab('info');
-  renderColorPicker();
   renderColors();openModal();
   loadStudentsForModal(id);
 }
@@ -478,71 +397,14 @@ function renderStudentList(){
 }
 
 let _editStudentId=null;
-function setStuTab(tab){
-  const isSingle = tab==='single';
-  document.getElementById('sf-pane-single').style.display = isSingle ? '' : 'none';
-  document.getElementById('sf-pane-bulk').style.display   = isSingle ? 'none' : '';
-  document.getElementById('sf-tab-single').style.color = isSingle ? 'var(--primary)' : 'var(--muted)';
-  document.getElementById('sf-tab-single').style.borderBottom = isSingle ? '2px solid var(--primary)' : 'none';
-  document.getElementById('sf-tab-bulk').style.color = isSingle ? 'var(--muted)' : 'var(--primary)';
-  document.getElementById('sf-tab-bulk').style.borderBottom = isSingle ? 'none' : '2px solid var(--primary)';
-}
-
-function previewBulk(){
-  const raw = document.getElementById('sf-bulk-raw').value.trim();
-  if(!raw){ document.getElementById('sf-bulk-preview').textContent=''; return; }
-  const students = parseBulkRaw(raw);
-  document.getElementById('sf-bulk-preview').innerHTML =
-    `<span style="color:var(--primary);font-weight:700;">✓ พบ ${students.length} คน</span> — ${students.slice(0,3).map(s=>s.first).join(', ')}${students.length>3?'...':''}`;
-}
-
-function parseBulkRaw(raw){
-  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
-  return lines.map((line,i)=>{
-    let clean = line.replace(/^(ด\.ช\.|ด\.ญ\.|นาย|นางสาว|นาง)\s*/,'').trim();
-    const numMatch = clean.match(/^(\d+)\s+(.+)/);
-    let no = i+1, rest = clean;
-    if(numMatch){ no = parseInt(numMatch[1]); rest = numMatch[2].trim(); }
-    const parts = rest.split(/\s+/);
-    return { no, first: parts[0]||'', last: parts.slice(1).join(' ')||'' };
-  });
-}
-
-async function saveBulkStudents(){
-  const raw = document.getElementById('sf-bulk-raw').value.trim();
-  if(!raw){ return; }
-  const students = parseBulkRaw(raw);
-  if(!students.length){ return; }
-  const btn = document.querySelector('#sf-pane-bulk .btn-primary');
-  if(btn){ btn.disabled=true; btn.textContent='กำลังบันทึก...'; }
-  try{
-    for(const s of students){
-      await CKService.addStudent(_editId,{student_number:s.no, first_name:s.first, last_name:s.last});
-    }
-    showToast(`เพิ่ม ${students.length} คนแล้ว`);
-    document.getElementById('sf-bulk-raw').value='';
-    document.getElementById('sf-bulk-preview').textContent='';
-    closeStuModal();
-    await loadStudentsForModal(_editId);
-  } catch(e){
-    showToast('เกิดข้อผิดพลาด');
-  } finally {
-    if(btn){ btn.disabled=false; btn.textContent='บันทึกทั้งหมด'; }
-  }
-}
-
 function openAddStudent(){
   _editStudentId=null;
   document.getElementById('stu-modal-title').textContent='เพิ่มนักเรียน';
-  document.getElementById('sf-tabs').style.display='flex';
   document.getElementById('sf-no').value=_modalStudents.length?Math.max(..._modalStudents.map(s=>s.no||0))+1:1;
   document.getElementById('sf-first').value='';
   document.getElementById('sf-last').value='';
   document.getElementById('sf-move-block').style.display='none';
   document.getElementById('sf-delete').style.display='none';
-  document.getElementById('sf-bulk-raw').value='';
-  document.getElementById('sf-bulk-preview').textContent='';
-  setStuTab('bulk'); // default bulk เพราะส่วนใหญ่จะวางรายชื่อ
   openStuModal();
 }
 
@@ -551,8 +413,6 @@ function openEditStudent(studentId){
   if(!s) return;
   _editStudentId=studentId;
   document.getElementById('stu-modal-title').textContent='แก้ไขนักเรียน';
-  document.getElementById('sf-tabs').style.display='none';
-  setStuTab('single');
   document.getElementById('sf-no').value=s.no||'';
   document.getElementById('sf-first').value=s.fn||'';
   document.getElementById('sf-last').value=s.ln||'';

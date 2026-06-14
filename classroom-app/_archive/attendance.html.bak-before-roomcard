@@ -30,11 +30,11 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 .chip-a{background:var(--absent-bg);color:#dc2626;}
 .chip-v{background:var(--leave-bg);color:#4338ca;}
 
-.stat-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.stat-box{background:#fff;border-radius:12px;padding:7px 6px;text-align:center;border:1.5px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:var(--tr);display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;}
+.stat-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat-box{background:#fff;border-radius:16px;padding:6px 8px;text-align:center;border:1.5px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:var(--tr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
 .stat-box:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
-.stat-box .sv{font-size:17px;font-weight:800;line-height:1;}
-.stat-box .sl{font-size:11px;font-weight:700;}
+.stat-box .sv{font-size:20px;font-weight:800;line-height:1;}
+.stat-box .sl{font-size:11px;font-weight:700;margin-top:1px;}
 .sb-p{border-color:var(--primary-bd);background:var(--primary-bg);}  .sb-p .sv,.sb-p .sl{color:#15803d;}
 .sb-l{border-color:var(--late-bd);background:var(--late-bg);}        .sb-l .sv,.sb-l .sl{color:#b45309;}
 .sb-a{border-color:var(--absent-bd);background:var(--absent-bg);}    .sb-a .sv,.sb-a .sl{color:#dc2626;}
@@ -352,8 +352,21 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
     </div>
   </div>
 
-  <!-- hint "แตะ=มา" เอาออกแล้ว (ครูจำวิธีได้เอง ลดความรก) -->
-  <div id="m-hint-wrap" style="display:none;"></div>
+  <div id="m-hint-wrap">
+    <div class="m-hint" id="m-hint">
+      <span style="font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="color:var(--primary)"><b>แตะ</b> = มา</span>
+        <span style="color:#cbd5e1">|</span>
+        <span style="color:var(--late)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px"><path d="M19 12H5M5 12l6-6M5 12l6 6"/></svg> <b>ซ้าย</b> = สาย</span>
+        <span style="color:#cbd5e1">|</span>
+        <span style="color:var(--absent)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-1px"><path d="M5 12h14M13 6l6 6-6 6"/></svg> <b>ขวา</b> = ขาด</span>
+      </span>
+      <span style="margin-left:auto;cursor:pointer;color:#94a3b8;font-size:14px;font-weight:700;padding:2px 6px;flex-shrink:0;" onclick="toggleHint()">▲</span>
+    </div>
+    <div id="m-hint-collapsed" style="display:none;text-align:center;padding:4px;cursor:pointer;" onclick="toggleHint()">
+      <span style="font-size:11px;font-weight:700;color:var(--primary);">วิธีเช็คชื่อ ▼</span>
+    </div>
+  </div>
 
   <div class="m-progress">
     <div class="progress-wrap">
@@ -363,12 +376,12 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
         <span id="m-prog-left">เหลือ 0 คน</span>
       </div>
     </div>
-    <div style="display:flex;justify-content:flex-end;gap:7px;margin-top:7px;">
-      <button class="btn btn-outline" onclick="confirmReset()" style="font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:9px;color:#ef4444;border-color:#fca5a5;background:#fff5f5;gap:4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>ล้างการเช็ค
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+      <button class="btn btn-outline" onclick="confirmReset()" style="font-size:13px;padding:8px 14px;border-radius:12px;color:#ef4444;border-color:#fca5a5;background:#fff5f5;gap:6px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>ล้างการเช็ค
       </button>
-      <button class="btn btn-outline" onclick="confirmSetAll()" style="font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:9px;color:#15803d;border-color:#86efac;background:#f0fdf4;gap:4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>มาทุกคน
+      <button class="btn btn-outline" onclick="confirmSetAll()" style="font-size:13px;padding:8px 18px;border-radius:12px;color:#15803d;border-color:#86efac;background:#f0fdf4;gap:6px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>มาทุกคน
       </button>
     </div>
   </div>
@@ -1614,50 +1627,53 @@ function roomCardHtml(sec, period, mobile, status){
   const sub = timeStr ? `${timeStr} · ${sec.count||0} คน` : `${sec.count||0} คน`;
   const checked = status && status.checked;
 
-  // badge: เช็กแล้ว=เขียว (โชว์เสมอ). ยังไม่เช็ค: mobile=ลูกศรเล็ก, desktop=badge ส้ม
   const rightBadge = checked
-    ? `<span style="font-size:11px;font-weight:800;color:#15803d;background:#f0fdf4;border:1.5px solid #86efac;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>เช็กแล้ว
+    ? `<span style="font-size:${mobile?'11':'11'}px;font-weight:800;color:#15803d;background:#f0fdf4;border:1.5px solid #86efac;padding:${mobile?'4px 10px':'4px 12px'};border-radius:20px;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>${mobile?'เช็กแล้ว':'เช็กแล้ว'}
        </span>`
-    : (mobile
-        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>`
-        : `<span style="font-size:11px;font-weight:800;color:#ea580c;background:#fff7ed;border:1.5px solid #fed7aa;padding:4px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;">เช็คชื่อ ›</span>`);
+    : `<span style="font-size:11px;font-weight:800;color:#ea580c;background:#fff7ed;border:1.5px solid #fed7aa;padding:${mobile?'4px 10px':'4px 12px'};border-radius:20px;white-space:nowrap;flex-shrink:0;">เช็คชื่อ ›</span>`;
 
   const cardBg = checked ? '#fafffc' : '#fff';
   const cardBd = checked ? '#86efac' : 'var(--border)';
   const iconBg = lc.icon;
 
-  const ringBg = lc.bg;  // สีพื้นอ่อนตาม level = วงแหวนรอบจุด
-
   if(mobile){
-    // Mobile: แบบ B กระชับสุด — จุดสี + ชื่อ/เวลาแถวเดียว + ลูกศร, ขอบบาง
+    // Mobile: compact row — ไม่มีไอคอน เน้นข้อความ
     return `<div onclick="chooseRoom('${sec.id}')"
-      style="background:${cardBg};border:1px solid ${cardBd==='var(--border)'?'#eef1f5':cardBd};border-radius:11px;padding:9px 12px;
+      style="background:${cardBg};border:1.5px solid ${cardBd};border-radius:12px;padding:10px 14px;
              display:flex;align-items:center;gap:10px;cursor:pointer;
-             box-shadow:0 1px 3px rgba(15,23,42,.05);
-             transition:transform .15s cubic-bezier(.4,0,.2,1);"
-      ontouchstart="this.style.transform='scale(.97)';" ontouchend="this.style.transform='';">
-      <span style="width:9px;height:9px;border-radius:50%;background:${iconBg};box-shadow:0 0 0 3px ${ringBg};flex-shrink:0;"></span>
-      <div style="flex:1;min-width:0;display:flex;align-items:baseline;gap:7px;">
-        <span style="font-size:13.5px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0;">${sec.subject} ${sec.name}</span>
-        <span style="font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap;flex-shrink:0;">${timeStr?`${timeStr} · `:''}${sec.count||0} คน</span>
+             transition:border-color .15s,background .15s;"
+      onmouseover="this.style.borderColor='var(--primary)';this.style.background='#f0fdf9';"
+      onmouseout="this.style.borderColor='${cardBd}';this.style.background='${cardBg}';">
+      <span style="width:8px;height:8px;border-radius:50%;background:${iconBg};flex-shrink:0;"></span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sec.subject} ${sec.name}</div>
+        ${timeStr?`<div style="font-size:11px;font-weight:600;color:var(--muted);margin-top:1px;">${timeStr} · ${sec.count||0} คน</div>`:''}
       </div>
       <div style="flex-shrink:0;">${rightBadge}</div>
     </div>`;
   }
 
-  // Desktop: แบบ B — จุดสีมีวงแหวน + ชื่อเด่น + ยกลอย/กดเด้ง
+  // Desktop: card เต็ม
+  const sz = 46;
   return `<div onclick="chooseRoom('${sec.id}')"
-    style="background:${cardBg};border:1px solid ${cardBd==='var(--border)'?'#eef1f5':cardBd};border-radius:14px;padding:13px 16px;
-           display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.05);
-           transition:all .2s cubic-bezier(.4,0,.2,1);"
-    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 26px rgba(15,23,42,.11)';"
-    onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(15,23,42,.05)';"
-    onmousedown="this.style.transform='scale(.985)';" onmouseup="this.style.transform='translateY(-2px)';">
-    <span style="width:12px;height:12px;border-radius:50%;background:${iconBg};box-shadow:0 0 0 4px ${ringBg};flex-shrink:0;"></span>
+    style="background:${cardBg};border:1.5px solid ${cardBd};border-radius:16px;padding:13px 14px;
+           display:flex;align-items:center;gap:13px;cursor:pointer;
+           transition:all .18s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 4px rgba(0,0,0,.06);"
+    onmouseover="this.style.borderColor='var(--primary)';this.style.background='#f0fdf9';"
+    onmouseout="this.style.borderColor='${cardBd}';this.style.background='${cardBg}';">
+    <div style="width:${sz}px;height:${sz}px;border-radius:13px;background:${iconBg};
+                display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"/>
+      </svg>
+    </div>
     <div style="flex:1;min-width:0;">
-      <div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sec.subject} ${sec.name}</div>
-      <div style="font-size:12px;font-weight:500;color:var(--muted);margin-top:2px;">${timeStr?`<b style="color:#64748b;font-weight:600;">${timeStr}</b> · `:''}${sec.count||0} คน</div>
+      <div style="font-size:15px;font-weight:800;color:var(--text);line-height:1.3;">${sec.subject} ${sec.name}</div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px;">
+        <span style="width:6px;height:6px;border-radius:50%;background:${iconBg};display:inline-block;flex-shrink:0;"></span>
+        ${sub}
+      </div>
     </div>
     <div style="flex-shrink:0;">${rightBadge}</div>
   </div>`;

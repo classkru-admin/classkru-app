@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>การ์ดสถิติ — ตัวอย่าง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="ck-theme.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);padding:36px 32px 60px;}
+.col{max-width:1100px;margin:0 auto;}
+.greet{font-size:22px;font-weight:800;margin-bottom:4px;}
+.greet-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+h2{font-size:13px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin:34px 0 14px;}
+
+/* ───── แถวการ์ดสถิติ (สดใส) ───── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+.stat{background:#fff;border:1px solid #eef1f5;border-radius:20px;padding:18px 16px;box-shadow:0 2px 8px rgba(15,23,42,.05);transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;}
+.stat:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,23,42,.12);}
+
+/* การ์ดเด่น — เขียวสด gradient */
+.stat.hero{background:linear-gradient(135deg,#22c55e,#10b981);border:none;color:#fff;box-shadow:0 10px 26px rgba(16,185,129,.38);}
+
+/* ไอคอนพื้นหลังวงกลม — สีสด */
+.stat-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.stat.hero .stat-ic{background:rgba(255,255,255,.25);}
+.stat-ic.green{background:#dcfce7;}  .stat-ic.green svg{stroke:#16a34a;}
+.stat-ic.amber{background:#fef3c7;}  .stat-ic.amber svg{stroke:#f59e0b;}
+.stat-ic.blue{background:#dbeafe;}   .stat-ic.blue svg{stroke:#3b82f6;}
+.stat.hero .stat-ic svg{stroke:#fff;}
+
+/* label = พอดีกรอบ ไม่ตกบรรทัด */
+.stat-lbl{font-size:12.5px;font-weight:600;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat.hero .stat-lbl{color:rgba(255,255,255,.9);}
+/* ตัวเลข = เด่น แต่ขนาดพอดี */
+.stat-num{font-size:27px;font-weight:800;line-height:1.1;margin-top:4px;letter-spacing:-.01em;}
+.stat-num small{font-size:13px;font-weight:600;opacity:.55;}
+
+.checkmark{position:absolute;top:18px;right:18px;opacity:.55;}
+.stat.hero .checkmark svg{stroke:#fff;}
+
+.note{font-size:12px;color:var(--muted);text-align:center;padding-top:30px;}
+
+/* การ์ดห้อง (โบนัส — โชว์ spacing โปร่ง) */
+.rooms{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.room{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(15,23,42,.04);}
+.room:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,23,42,.1);}
+.room-ic{width:50px;height:50px;border-radius:15px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.room-ic svg{stroke:#16a34a;}
+.room-nm{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.room-sub{font-size:12.5px;font-weight:500;color:#94a3b8;margin-top:3px;white-space:nowrap;}
+.room-arrow{margin-left:auto;width:36px;height:36px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--tr);}
+.room:hover .room-arrow{background:#16a34a;}
+.room:hover .room-arrow svg{stroke:#fff;}
+.room-arrow svg{stroke:#16a34a;}
+</style>
+</head>
+<body>
+<div class="col">
+  <div class="greet">👋 สวัสดีครับ คุณครู Biggie</div>
+  <div class="greet-sub">วันจันทร์ที่ 15 มิถุนายน 2569</div>
+
+  <h2>ภาพรวมวันนี้</h2>
+  <div class="stats">
+    <div class="stat hero">
+      <div class="checkmark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="stat-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <div class="stat-lbl">คาบวันนี้</div>
+      <div class="stat-num">5 <small>คาบ</small></div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-ic green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="stat-lbl">เช็คชื่อแล้ว</div>
+      <div class="stat-num">1 <small>/5</small></div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-ic amber"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <div class="stat-lbl">รอเช็ค</div>
+      <div class="stat-num">4 <small>คาบ</small></div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-ic blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+      <div class="stat-lbl">นักเรียนทั้งหมด</div>
+      <div class="stat-num">150 <small>คน</small></div>
+    </div>
+  </div>
+
+  <h2>ห้องเรียนของฉัน</h2>
+  <div class="rooms">
+    <div class="room">
+      <div class="room-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"/></svg></div>
+      <div><div class="room-nm">วิทยาศาสตร์ ม.1/1</div><div class="room-sub">30 คน · 08:30–09:20</div></div>
+      <div class="room-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="room">
+      <div class="room-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5z"/></svg></div>
+      <div><div class="room-nm">คณิตศาสตร์ ม.2/1</div><div class="room-sub">28 คน · 10:20–11:10</div></div>
+      <div class="room-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+  </div>
+
+  <div class="note">ตัวอย่าง — ใช้สีเขียวแบรนด์เรา (ไม่ลอกม่วงของเขา) · ไอคอนพื้นหลังวงกลม · spacing โปร่ง · การ์ดเด่น 1 ใบ<br>เอาเมาส์ชี้การ์ดดู hover · ของจริงไม่ถูกแตะ</div>
+</div>
+</body>
+</html>

@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เริ่มต้นใช้งาน — ClassKru</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="ck-theme.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-/* สี/ขนาดมาจาก ck-theme.css — override เฉพาะเงาของหน้านี้ */
-:root{ --sh:0 1px 4px rgba(0,0,0,.06); --sh-md:0 6px 24px rgba(0,0,0,.10); }
+:root{
+  --primary:#1d9e75;--pk:#0f6e56;--pbg:#f0fdf4;--pbd:#86efac;
+  --bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e8edf2;
+  --sh:0 1px 4px rgba(0,0,0,.06);--sh-md:0 6px 24px rgba(0,0,0,.10);
+  --tr:all .18s cubic-bezier(.4,0,.2,1);
+}
 html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 .btn{font-family:'Sarabun',sans-serif;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);border-radius:12px;}
 .btn:active{transform:scale(.97);}
