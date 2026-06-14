@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ตารางเรียน — ClassKru</title>
+<title>ตารางสอน — ClassKru</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -149,7 +149,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
     <button class="m-back" onclick="go('settings.html')">
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     </button>
-    <div class="m-title">ตารางเรียน</div>
+    <div class="m-title">ตารางสอน</div>
     <button class="btn btn-primary" style="padding:7px 14px;font-size:13px;border-radius:12px;" onclick="openAddModal(null,null)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       เพิ่ม
@@ -192,6 +192,9 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
     <div class="d-sb-link" onclick="go('index.html')">
       <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก
     </div>
+    <div class="d-sb-link active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>ตารางสอน
+    </div>
     <div class="d-sb-link" onclick="go('attendance.html')">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ
     </div>
@@ -212,13 +215,13 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
       </button>
       <div class="d-topbar-title">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        ตารางเรียน
+        ตารางสอน
       </div>
     </div>
     <div class="d-scroll">
       <div class="sched-header">
         <div>
-          <div class="sched-h1">ตารางเรียนประจำสัปดาห์</div>
+          <div class="sched-h1">ตารางสอนประจำสัปดาห์</div>
           <div class="sched-sub">คลิกช่องว่างเพื่อเพิ่มคาบ · คลิกการ์ดเพื่อแก้ไข</div>
         </div>
       </div>
