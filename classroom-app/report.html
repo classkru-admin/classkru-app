@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>สถิติ — ClassKru</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --primary:#1d9e75;--pk:#0f6e56;--pbg:#f0fdf4;--pbd:#86efac;
+  --bg:#f5f7fa;--card:#fff;--text:#0f172a;--muted:#5b6675;--border:#e8edf2;
+  --sh:0 1px 4px rgba(0,0,0,.07);--sh-md:0 4px 16px rgba(0,0,0,.10);
+  --tr:all .18s cubic-bezier(.4,0,.2,1);
+  --sidebar-w:200px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-70px);background:rgba(15,23,42,.88);color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:22px;white-space:nowrap;z-index:9999;transition:transform .25s;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ══════════════════════════════════
+   MOBILE
+══════════════════════════════════ */
+.m-wrap{display:flex;flex-direction:column;min-height:100dvh;max-width:480px;margin:0 auto;}
+.m-topbar{background:#fff;border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;box-shadow:var(--sh);position:sticky;top:0;z-index:50;}
+.m-topbar-title{font-size:16px;font-weight:800;flex:1;}
+.m-scroll{flex:1;overflow-y:auto;padding:12px 12px calc(68px + var(--safe-bottom));display:flex;flex-direction:column;gap:10px;}
+.m-bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);height:62px;display:flex;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06);padding-bottom:env(safe-area-inset-bottom,0);}
+.m-bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;font-family:'Sarabun',sans-serif;padding:6px 0 4px;}
+.m-bn:active{opacity:.6;}
+.m-bn svg{width:22px;height:22px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.m-bn span{font-size:10px;font-weight:600;color:#9ca3af;}
+.m-bn.active svg{stroke:var(--primary);}
+.m-bn.active span{color:var(--primary);font-weight:700;}
+
+/* ── Mobile report components ── */
+.m-summary-strip{background:linear-gradient(135deg,#1d9e75 0%,#16a085 100%);border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.m-sum-stat{text-align:center;}
+.m-sum-num{font-size:22px;font-weight:800;color:#fff;line-height:1;}
+.m-sum-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.75);margin-top:2px;}
+
+.m-room-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:var(--tr);box-shadow:var(--sh);}
+.m-room-card:active{transform:scale(.98);background:#fafbfc;}
+.m-room-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.m-room-name{font-size:14px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px;}
+.m-room-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.m-room-badges{display:flex;gap:4px;}
+.m-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;}
+.m-badge-risk{background:#fef2f2;color:#dc2626;}
+.m-badge-warn{background:#fffbeb;color:#b45309;}
+.m-room-bottom{display:flex;align-items:center;justify-content:space-between;}
+.m-room-pct{font-size:22px;font-weight:800;line-height:1;}
+.m-room-meta{text-align:right;}
+.m-room-stu{font-size:11px;font-weight:600;color:var(--muted);}
+.m-room-bar{height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-top:8px;}
+.m-room-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+
+.m-subj-head{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:4px 2px 2px;display:flex;align-items:center;gap:6px;}
+.m-subj-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* Mobile detail view */
+.m-detail-back{display:flex;align-items:center;gap:8px;margin-bottom:12px;cursor:pointer;padding:4px 2px;}
+.m-detail-back svg{width:18px;height:18px;stroke:var(--primary);stroke-width:2.2;fill:none;stroke-linecap:round;}
+.m-detail-back span{font-size:13px;font-weight:700;color:var(--primary);}
+
+.m-tabs{display:flex;background:#f1f5f9;border-radius:12px;padding:3px;gap:2px;margin-bottom:12px;}
+.m-tab{flex:1;padding:7px 4px;border:none;border-radius:9px;background:transparent;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:var(--tr);}
+.m-tab.active{background:#fff;color:var(--primary);box-shadow:var(--sh);}
+
+.m-pane{display:none;}
+.m-pane.active{display:block;}
+
+.m-stu-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1.5px solid var(--border);border-radius:12px;margin-bottom:6px;}
+.m-stu-num{font-size:12px;font-weight:700;color:var(--muted);width:28px;flex-shrink:0;text-align:center;}
+.m-stu-name{flex:1;font-size:14px;font-weight:700;color:var(--text);}
+.m-stu-chips{display:flex;gap:4px;}
+.m-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.m-chip-absent{background:#fef2f2;color:#dc2626;}
+.m-chip-late{background:#fffbeb;color:#b45309;}
+.m-chip-leave{background:#eff6ff;color:#2563eb;}
+.m-chip-ok{background:var(--pbg);color:var(--primary);}
+
+.m-week-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:1.5px solid var(--border);border-radius:12px;margin-bottom:6px;}
+.m-week-label{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.m-week-pct{font-size:16px;font-weight:800;}
+
+.m-today-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:6px;}
+.m-today-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;}
+.m-att-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f8fafc;}
+.m-att-row:last-child{border-bottom:none;}
+.m-att-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
+.m-att-status{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.m-att-present{background:var(--pbg);color:var(--pk);}
+.m-att-absent{background:#fef2f2;color:#dc2626;}
+.m-att-late{background:#fffbeb;color:#b45309;}
+.m-att-leave{background:#eff6ff;color:#2563eb;}
+.m-att-none{background:#f1f5f9;color:var(--muted);}
+
+.m-empty{text-align:center;padding:32px 20px;color:var(--muted);}
+.m-empty-icon{font-size:32px;margin-bottom:8px;}
+.m-empty-txt{font-size:13px;font-weight:600;}
+
+/* ══════════════════════════════════
+   DESKTOP
+══════════════════════════════════ */
+.d-wrap{display:none;}
+@media(min-width:768px){
+  .m-wrap{display:none;}
+  .d-wrap{display:flex;height:100vh;overflow:hidden;}
+  .d-sidebar{width:var(--sidebar-w);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;}
+  .d-sb-logo{padding:0;border-bottom:1px solid var(--border);display:flex;justify-content:center;align-items:center;height:96px;}
+  .d-sb-sec{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;padding:14px 16px 4px;}
+  .d-sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:var(--tr);border-left:3px solid transparent;text-decoration:none;}
+  .d-sb-link:hover{background:#f8fafc;color:var(--text);}
+  .d-sb-link.active{background:var(--pbg);color:var(--primary);border-left-color:var(--primary);}
+  .d-sb-link svg{width:18px;height:18px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;transition:stroke .15s;}
+  .d-sb-link.active svg,.d-sb-link:hover svg{stroke:var(--primary);}
+  .d-sb-spacer{flex:1;}
+  .d-sb-date{padding:16px 20px;font-size:11px;font-weight:600;color:#94a3b8;border-top:1px solid var(--border);}
+  .d-main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+  .d-topbar{background:#fff;border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 28px;gap:12px;flex-shrink:0;box-shadow:var(--sh);}
+  .d-topbar-title{font-size:16px;font-weight:800;flex:1;display:flex;align-items:center;gap:8px;}
+  .d-scroll{flex:1;overflow-y:auto;}
+  .d-content{padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
+}
+
+/* ══════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════ */
+
+/* Loading */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:10px;color:var(--muted);}
+.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Search */
+.search-wrap{position:relative;}
+.search-input{width:100%;padding:10px 14px 10px 38px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:600;background:#fff;border:1.5px solid var(--border);border-radius:14px;outline:none;color:var(--text);transition:var(--tr);}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,158,117,.1);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none;pointer-events:none;}
+
+/* Filter pills */
+.pills{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{font-family:'Sarabun',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:var(--tr);white-space:nowrap;}
+.pill:hover{border-color:var(--primary);color:var(--primary);}
+.pill.active{background:var(--pbg);border-color:var(--pbd);color:var(--primary);}
+
+/* Summary stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:4px;}
+.stat-box{background:#fff;border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);border:1.5px solid var(--border);}
+.stat-num{font-size:22px;font-weight:800;line-height:1;}
+.stat-lbl{font-size:13px;font-weight:600;color:var(--muted);}
+.stat-pct{color:var(--primary);}
+.stat-risk{color:#dc2626;}
+.stat-warn{color:#d97706;}
+
+/* Section header */
+.sec-hd{display:flex;align-items:center;gap:8px;padding:4px 0 2px;}
+.sec-hd-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.sec-hd-lbl{font-size:13px;font-weight:800;}
+.sec-hd-count{font-size:11px;font-weight:600;color:var(--muted);}
+
+/* Room cards grid */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+@media(max-width:767px){.cards-grid{grid-template-columns:1fr;}}
+
+/* Room card */
+.rc{background:#fff;border-radius:16px;border:1.5px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:var(--tr);overflow:hidden;}
+.rc:hover{box-shadow:var(--sh-md);transform:translateY(-1px);}
+.rc:active{transform:scale(.98);}
+.rc-head{padding:12px 14px 8px;display:flex;align-items:center;justify-content:space-between;}
+.rc-name{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;}
+.rc-name-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.rc-badges{display:flex;gap:5px;align-items:center;}
+.badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.badge-risk{background:#fef2f2;color:#dc2626;}
+.badge-warn{background:#fffbeb;color:#b45309;}
+.rc-body{padding:0 14px 12px;}
+.rc-count{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+.rc-pct{font-size:22px;font-weight:800;line-height:1;}
+.rc-pct-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px;}
+.rc-attend{font-size:11px;font-weight:600;color:var(--muted);}
+.rc-bar{height:6px;background:#f1f5f9;border-radius:99px;overflow:hidden;}
+.rc-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+
+/* Empty */
+.empty{background:#fff;border-radius:18px;padding:40px 20px;text-align:center;border:1.5px dashed var(--border);}
+.empty-icon{font-size:36px;margin-bottom:10px;}
+.empty-title{font-size:16px;font-weight:800;margin-bottom:6px;}
+.empty-sub{font-size:13px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- MOBILE -->
+<div class="m-wrap">
+  <div class="m-topbar" id="m-topbar">
+    <svg id="m-topbar-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <div class="m-topbar-title" id="m-topbar-title">สถิติ</div>
+  </div>
+  <div class="m-scroll" id="m-content">
+    <div class="loading-wrap"><div class="spin"></div><div style="font-size:13px;">กำลังโหลด...</div></div>
+  </div>
+  <nav class="m-bottom-nav">
+    <button class="m-bn" onclick="go('index.html')">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+      <span>หน้าหลัก</span>
+    </button>
+    <button class="m-bn" onclick="go('schedule.html')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+      <span>ตารางสอน</span>
+    </button>
+    <button class="m-bn" style="position:relative;" onclick="go('attendance.html')">
+      <div style="position:absolute;top:-14px;width:50px;height:50px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(29,158,117,.4);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      <span style="margin-top:22px;color:var(--primary);font-weight:700;">เช็คชื่อ</span>
+    </button>
+    <button class="m-bn active">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>สถิติ</span>
+    </button>
+    <button class="m-bn" onclick="go('settings.html')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>ตั้งค่า</span>
+    </button>
+  </nav>
+</div>
+
+<!-- DESKTOP -->
+<div class="d-wrap">
+  <aside class="d-sidebar">
+    <div class="d-sb-logo">
+      <img src="classkru-logo.png" alt="ClassKru" style="height:68px;width:auto;">
+    </div>
+    <div class="d-sb-sec">เมนู</div>
+    <a class="d-sb-link" onclick="go('index.html')">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก
+    </a>
+    <a class="d-sb-link" onclick="go('schedule.html')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>ตารางสอน
+    </a>
+    <a class="d-sb-link" onclick="go('attendance.html')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ
+    </a>
+    <a class="d-sb-link active">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>สถิติ
+    </a>
+    <a class="d-sb-link" onclick="go('settings.html')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>ตั้งค่า
+    </a>
+    <div class="d-sb-spacer"></div>
+    <div class="d-sb-date" id="d-sb-date"></div>
+  </aside>
+  <div class="d-main">
+    <div class="d-topbar">
+      <div class="d-topbar-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        สถิติ
+      </div>
+    </div>
+    <div class="d-scroll">
+      <div class="d-content" id="d-content">
+        <div class="loading-wrap"><div class="spin"></div><div style="font-size:13px;">กำลังโหลด...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+<script src="ck-service.js"></script>
+<script>
+/* ── helpers ── */
+function go(url){location.href=url;}
+function pad(n){return String(n).padStart(2,'0');}
+function fmtKey(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function showToast(msg){const t=document.getElementById('toast-el');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* ── state ── */
+let _sections = [];
+let _subjects = [];   // [{name, sections:[]}]
+let _termStats = {};  // sectionId → {absentCount per student}
+let _filterSubj = 'ทั้งหมด';
+let _search = '';
+let _mobileView = 'list'; // 'list' | 'detail'
+let _detailSectionId = null;
+let _detailTab = 'term'; // 'today' | 'week' | 'term' | 'summary'
+let _detailDates = [];
+let _detailStudents = [];
+let _detailAttendance = {}; // dateKey → {studentId → record}
+let _isMobile = () => window.innerWidth < 768;
+
+const LEVEL_DOT = { junior:'#16a34a', primary:'#ca8a04' };
+const MAX_ABSENT = 8;
+const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+/* ── group sections by subject ── */
+function buildSubjects(sections){
+  const map = new Map();
+  sections.forEach(s => {
+    if(!map.has(s.subject)) map.set(s.subject, []);
+    map.get(s.subject).push(s);
+  });
+  return [...map.entries()].map(([name, secs]) => ({ name, sections: secs }));
+}
+
+/* ── load term stats for all sections ── */
+async function loadAllTermStats(){
+  await Promise.all(_sections.map(async sec => {
+    const dates = await CKService.getSessionDates(sec.id);
+    const students = await CKService.getStudents(sec.id);
+    const stuStats = {};
+    students.forEach(s => { stuStats[s.id] = { absent:0, late:0, leave:0, ...s }; });
+    for(const dk of dates){
+      const recs = await CKService.getAttendance(sec.id, dk);
+      students.forEach(s => {
+        const r = recs[s.id];
+        if(!r) return;
+        if(r.status==='absent') stuStats[s.id].absent++;
+        else if(r.status==='late') stuStats[s.id].late++;
+        else if(r.status==='leave') stuStats[s.id].leave++;
+      });
+    }
+    _termStats[sec.id] = {
+      students: Object.values(stuStats),
+      dateCount: dates.length,
+    };
+  }));
+}
+
+/* ── compute risk counts ── */
+function riskCounts(sectionId){
+  const t = _termStats[sectionId];
+  if(!t) return {risk:0,warn:0};
+  let risk=0, warn=0;
+  t.students.forEach(s => {
+    if(s.absent >= MAX_ABSENT) risk++;
+    else if(s.absent >= Math.ceil(MAX_ABSENT * 0.7)) warn++;
+  });
+  return {risk, warn};
+}
+
+/* ── attendance summary across all sessions ── */
+function termAttendSummary(sectionId){
+  const t = _termStats[sectionId];
+  if(!t || !t.dateCount) return null;
+  const sessions = t.dateCount; // จำนวนคาบที่เช็กชื่อจริง
+  const n = t.students.length;
+  // รวมทุกคนแล้วหาร n เพื่อได้ค่าเฉลี่ยต่อคน
+  const absentTotal = t.students.reduce((s,x) => s + x.absent, 0);
+  const lateTotal   = t.students.reduce((s,x) => s + x.late, 0);
+  const leaveTotal  = t.students.reduce((s,x) => s + x.leave, 0);
+  // คาบที่นับ = มา + สาย + ลา (ต่อคน เฉลี่ย)
+  const attended = sessions * n - absentTotal; // (มา+สาย+ลา) รวมทุกคน
+  // pct = (มา+สาย+ลา) / (sessions * n) * 100
+  const pct = sessions > 0 && n > 0 ? Math.round(attended / (sessions * n) * 100) : 0;
+  return { attended, sessions, n, pct };
+}
+
+/* ── mobile: room list ── */
+function buildMobileList(){
+  const mEl = document.getElementById('m-content');
+  if(!mEl) return;
+
+  // summary stats
+  let totalRooms = 0, totalRisk = 0;
+  let sumPct = 0, pctCount = 0;
+  _sections.forEach(sec => {
+    totalRooms++;
+    const {risk} = riskCounts(sec.id);
+    totalRisk += risk;
+    const att = termAttendSummary(sec.id);
+    if(att){ sumPct += att.pct; pctCount++; }
+  });
+  const avgPct = pctCount > 0 ? Math.round(sumPct / pctCount) : 0;
+
+  if(!_sections.length){
+    mEl.innerHTML = `<div class="m-empty"><div class="m-empty-icon">📊</div><div class="m-empty-txt">ยังไม่มีห้องเรียน</div></div>`;
+    return;
+  }
+
+  let html = `<div class="m-summary-strip">
+    <div class="m-sum-stat"><div class="m-sum-num">${totalRooms}</div><div class="m-sum-lbl">ห้องทั้งหมด</div></div>
+    <div class="m-sum-stat"><div class="m-sum-num">${avgPct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
+    <div class="m-sum-stat"><div class="m-sum-num" style="color:#fbbf24;">${totalRisk}</div><div class="m-sum-lbl">ห้องน่ากังวล</div></div>
+  </div>`;
+
+  _subjects.forEach(subj => {
+    if(!subj.sections.length) return;
+    const dot = subj.sections[0]?.level === 'junior' ? '#16a34a' : '#ca8a04';
+    html += `<div class="m-subj-head"><div class="m-subj-dot" style="background:${dot};"></div>${subj.name}</div>`;
+    subj.sections.forEach(sec => {
+      const {risk, warn} = riskCounts(sec.id);
+      const att = termAttendSummary(sec.id);
+      const pct = att ? att.pct : null;
+      const barColor = pct === null ? '#94a3b8' : pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
+      const levelDot = LEVEL_DOT[sec.level] || '#94a3b8';
+      html += `<div class="m-room-card" onclick="openMobileDetail('${sec.id}')">
+        <div class="m-room-top">
+          <div class="m-room-name">
+            <div class="m-room-dot" style="background:${levelDot};"></div>
+            ${subj.name} ${sec.name}
+          </div>
+          <div class="m-room-badges">
+            ${risk>0?`<span class="m-badge m-badge-risk">เสี่ยง ${risk}</span>`:''}
+            ${warn>0?`<span class="m-badge m-badge-warn">เฝ้าระวัง ${warn}</span>`:''}
+          </div>
+        </div>
+        <div class="m-room-bottom">
+          <div class="m-room-pct" style="color:${barColor};">${pct !== null ? pct+'%' : '—'}</div>
+          <div class="m-room-meta">
+            <div class="m-room-stu" style="font-size:12px;font-weight:700;">${sec.count||0} คน</div>
+            ${att ? `<div class="m-room-stu">${att.sessions} คาบ</div>` : '<div class="m-room-stu">ยังไม่มีข้อมูล</div>'}
+          </div>
+        </div>
+        <div class="m-room-bar"><div class="m-room-bar-fill" style="width:${pct||0}%;background:${barColor};"></div></div>
+      </div>`;
+    });
+  });
+
+  mEl.innerHTML = html;
+}
+
+/* ── mobile: open room detail ── */
+async function openMobileDetail(sectionId){
+  _mobileView = 'detail';
+  _detailSectionId = sectionId;
+
+  const sec = _sections.find(s => s.id === sectionId);
+  const subj = _subjects.find(s => s.sections.some(r => r.id === sectionId));
+  const label = `${subj?.name||''} ${sec?.name||''}`.trim();
+
+  // เปลี่ยน topbar: ปุ่ม ← + ชื่อห้อง
+  const topbar = document.getElementById('m-topbar');
+  if(topbar){
+    topbar.innerHTML = `
+      <button onclick="closeMobileDetail()" style="width:34px;height:34px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="m-topbar-title">${label}</div>`;
+  }
+
+  const mEl = document.getElementById('m-content');
+  mEl.innerHTML = `<div class="loading-wrap"><div class="spin"></div><div style="font-size:13px;">กำลังโหลด...</div></div>`;
+
+  // load data
+  _detailDates = await CKService.getSessionDates(sectionId);
+  _detailStudents = await CKService.getStudents(sectionId);
+  _detailAttendance = {};
+  for(const dk of _detailDates){
+    _detailAttendance[dk] = await CKService.getAttendance(sectionId, dk);
+  }
+
+  renderMobileDetail();
+}
+
+function closeMobileDetail(){
+  _mobileView = 'list';
+  // คืน topbar เดิม
+  const topbar = document.getElementById('m-topbar');
+  if(topbar){
+    topbar.innerHTML = `
+      <svg id="m-topbar-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <div class="m-topbar-title" id="m-topbar-title">สถิติ</div>`;
+  }
+  buildMobileList();
+}
+
+function setMobileTab(tab){
+  _detailTab = tab;
+  renderMobileDetail();
+}
+
+function renderMobileDetail(){
+  const mEl = document.getElementById('m-content');
+  if(!mEl) return;
+
+  const sec = _sections.find(s => s.id === _detailSectionId);
+  const subj = _subjects.find(s => s.sections.some(r => r.id === _detailSectionId));
+  const att = termAttendSummary(_detailSectionId);
+  const pct = att ? att.pct : 0;
+  const barColor = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
+  const {risk, warn} = riskCounts(_detailSectionId);
+
+  const todayKey = fmtKey(new Date());
+  const tabs = ['today','week','term','summary'];
+  const tabLabels = ['วันนี้','รายสัปดาห์','รายเทอม','สรุปผล'];
+
+  let html = `
+  <div class="m-summary-strip" style="margin-bottom:10px;">
+    <div class="m-sum-stat"><div class="m-sum-num">${pct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
+    <div class="m-sum-stat"><div class="m-sum-num" style="color:#fbbf24;">${risk}</div><div class="m-sum-lbl">เสี่ยงหลุด</div></div>
+    <div class="m-sum-stat"><div class="m-sum-num">${_detailDates.length}</div><div class="m-sum-lbl">คาบที่เช็กแล้ว</div></div>
+  </div>
+  <div class="m-tabs">
+    ${tabs.map((t,i) => `<button class="m-tab${_detailTab===t?' active':''}" onclick="setMobileTab('${t}')">${tabLabels[i]}</button>`).join('')}
+  </div>`;
+
+  // ── วันนี้ ──
+  if(_detailTab === 'today'){
+    const todayRecs = _detailAttendance[todayKey];
+    if(!todayRecs || !Object.keys(todayRecs).length){
+      html += `<div class="m-empty"><div class="m-empty-icon">📋</div><div class="m-empty-txt">ยังไม่ได้เช็คชื่อวันนี้</div></div>`;
+    } else {
+      html += `<div class="m-today-card"><div class="m-today-title">การเข้าเรียนวันนี้</div>`;
+      _detailStudents.forEach(s => {
+        const r = todayRecs[s.id];
+        const status = r?.status || 'none';
+        const statusLabel = {present:'มาเรียน',absent:'ขาด',late:'สาย',leave:'ลา',none:'ไม่มีข้อมูล'}[status];
+        const cls = {present:'m-att-present',absent:'m-att-absent',late:'m-att-late',leave:'m-att-leave',none:'m-att-none'}[status];
+        html += `<div class="m-att-row">
+          <span class="m-att-name">${s.number ? s.number+'. ':''} ${s.name}</span>
+          <span class="m-att-status ${cls}">${statusLabel}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  // ── รายสัปดาห์ ──
+  else if(_detailTab === 'week'){
+    if(!_detailDates.length){
+      html += `<div class="m-empty"><div class="m-empty-icon">📅</div><div class="m-empty-txt">ยังไม่มีข้อมูลการเช็คชื่อ</div></div>`;
+    } else {
+      // group dates into weeks
+      const weeks = [];
+      let currentWeek = [];
+      let weekStart = null;
+      const sorted = [..._detailDates].sort();
+      sorted.forEach(dk => {
+        const d = new Date(dk);
+        const mon = new Date(d); mon.setDate(d.getDate() - ((d.getDay()+6)%7));
+        const monKey = fmtKey(mon);
+        if(monKey !== weekStart){
+          if(currentWeek.length) weeks.push({start:weekStart, dates:currentWeek});
+          weekStart = monKey;
+          currentWeek = [dk];
+        } else {
+          currentWeek.push(dk);
+        }
+      });
+      if(currentWeek.length) weeks.push({start:weekStart, dates:currentWeek});
+
+      const n = _detailStudents.length;
+      weeks.reverse().slice(0,8).forEach(w => {
+        const total = w.dates.length * n;
+        let absent = 0;
+        w.dates.forEach(dk => {
+          const recs = _detailAttendance[dk] || {};
+          _detailStudents.forEach(s => { if(recs[s.id]?.status==='absent') absent++; });
+        });
+        const pct = total > 0 ? Math.round((total - absent) / total * 100) : 0;
+        const color = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
+        const d = new Date(w.start);
+        const label = `สัปดาห์ ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+        html += `<div class="m-week-row">
+          <div class="m-week-label">${label} <span style="font-size:11px;color:var(--muted);font-weight:400;">${w.dates.length} คาบ</span></div>
+          <div class="m-week-pct" style="color:${color};">${pct}%</div>
+        </div>`;
+      });
+    }
+  }
+
+  // ── รายเทอม ──
+  else if(_detailTab === 'term'){
+    if(!_detailStudents.length){
+      html += `<div class="m-empty"><div class="m-empty-icon">👥</div><div class="m-empty-txt">ยังไม่มีนักเรียนในห้องนี้</div></div>`;
+    } else {
+      // compute per-student stats
+      const stuStats = {};
+      _detailStudents.forEach(s => { stuStats[s.id] = {absent:0,late:0,leave:0}; });
+      _detailDates.forEach(dk => {
+        const recs = _detailAttendance[dk] || {};
+        _detailStudents.forEach(s => {
+          const r = recs[s.id];
+          if(!r) return;
+          if(r.status==='absent') stuStats[s.id].absent++;
+          else if(r.status==='late') stuStats[s.id].late++;
+          else if(r.status==='leave') stuStats[s.id].leave++;
+        });
+      });
+      const sorted = [..._detailStudents].sort((a,b) => (stuStats[b.id]?.absent||0) - (stuStats[a.id]?.absent||0));
+      sorted.forEach(s => {
+        const st = stuStats[s.id];
+        const isRisk = st.absent >= MAX_ABSENT;
+        const isWarn = !isRisk && st.absent >= Math.ceil(MAX_ABSENT * 0.7);
+        html += `<div class="m-stu-row" style="${isRisk?'border-color:#fca5a5;':''}${isWarn?'border-color:#fde68a;':''}">
+          <div class="m-stu-num">${s.number||'—'}</div>
+          <div class="m-stu-name">${s.name}</div>
+          <div class="m-stu-chips">
+            ${st.absent>0?`<span class="m-chip m-chip-absent">ขาด ${st.absent}</span>`:''}
+            ${st.late>0?`<span class="m-chip m-chip-late">สาย ${st.late}</span>`:''}
+            ${st.leave>0?`<span class="m-chip m-chip-leave">ลา ${st.leave}</span>`:''}
+            ${st.absent===0&&st.late===0&&st.leave===0?`<span class="m-chip m-chip-ok">ปกติ</span>`:''}
+          </div>
+        </div>`;
+      });
+    }
+  }
+
+  // ── สรุปผล ──
+  else if(_detailTab === 'summary'){
+    const n = _detailStudents.length;
+    const sessions = _detailDates.length;
+    if(!sessions || !n){
+      html += `<div class="m-empty"><div class="m-empty-icon">📊</div><div class="m-empty-txt">ยังไม่มีข้อมูลเพียงพอ</div></div>`;
+    } else {
+      let totalAbsent=0, totalLate=0, totalLeave=0;
+      _detailDates.forEach(dk => {
+        const recs = _detailAttendance[dk] || {};
+        _detailStudents.forEach(s => {
+          const r = recs[s.id];
+          if(!r) return;
+          if(r.status==='absent') totalAbsent++;
+          else if(r.status==='late') totalLate++;
+          else if(r.status==='leave') totalLeave++;
+        });
+      });
+      const totalSlots = sessions * n;
+      const totalPresent = totalSlots - totalAbsent;
+      const overallPct = Math.round(totalPresent / totalSlots * 100);
+      const {risk, warn} = riskCounts(_detailSectionId);
+
+      html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;font-weight:800;color:var(--primary);">${overallPct}%</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;">เฉลี่ยเข้าเรียน</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;font-weight:800;color:var(--text);">${sessions}</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;">คาบที่เช็กแล้ว</div>
+        </div>
+        <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;font-weight:800;color:#dc2626;">${risk}</div>
+          <div style="font-size:11px;color:#dc2626;font-weight:600;margin-top:2px;">เสี่ยงหลุด</div>
+        </div>
+        <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;font-weight:800;color:#d97706;">${warn}</div>
+          <div style="font-size:11px;color:#d97706;font-weight:600;margin-top:2px;">เฝ้าระวัง</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-top:8px;">
+        <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:10px;">สรุปพฤติกรรม</div>
+        ${[
+          {label:'ขาดเรียน',val:totalAbsent,color:'#dc2626'},
+          {label:'มาสาย',val:totalLate,color:'#d97706'},
+          {label:'ลา',val:totalLeave,color:'#2563eb'},
+          {label:'เข้าเรียน',val:totalPresent,color:barColor},
+        ].map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;">
+          <span style="font-size:13px;font-weight:600;color:var(--text);">${x.label}</span>
+          <span style="font-size:15px;font-weight:800;color:${x.color};">${x.val}</span>
+        </div>`).join('')}
+      </div>`;
+    }
+  }
+
+  mEl.innerHTML = html;
+}
+
+/* ── render ── */
+function setContent(html){
+  const dEl = document.getElementById('d-content');
+  if(dEl) dEl.innerHTML = html;
+  // mobile uses its own builder
+  if(_isMobile() && _mobileView === 'list') buildMobileList();
+}
+
+function render(){
+  // filter subjects
+  const subjsToShow = _filterSubj === 'ทั้งหมด'
+    ? _subjects
+    : _subjects.filter(s => s.name === _filterSubj);
+
+  // search filter
+  const q = _search.trim().toLowerCase();
+  const filtered = subjsToShow.map(subj => ({
+    ...subj,
+    sections: q
+      ? subj.sections.filter(s => s.name.toLowerCase().includes(q) || s.subject.toLowerCase().includes(q))
+      : subj.sections,
+  })).filter(s => s.sections.length > 0);
+
+  // summary stats
+  let totalRooms = 0, totalRisk = 0;
+  let sumPct = 0, pctCount = 0;
+  _sections.forEach(sec => {
+    totalRooms++;
+    const {risk} = riskCounts(sec.id);
+    totalRisk += risk;
+    const att = termAttendSummary(sec.id);
+    if(att){ sumPct += att.pct; pctCount++; }
+  });
+  const avgPct = pctCount > 0 ? Math.round(sumPct / pctCount) : 0;
+
+  // search + pills
+  let html = `
+  <div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:12px;">เลือกห้องที่จะดูสถิติ</div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">${totalRooms}</div><div class="stat-lbl">ห้องทั้งหมด</div></div>
+    <div class="stat-box"><div class="stat-num stat-pct">${avgPct}%</div><div class="stat-lbl">เฉลี่ยทั้งหมด</div></div>
+    <div class="stat-box"><div class="stat-num stat-risk">${totalRisk}</div><div class="stat-lbl">ห้องน่ากังวล</div></div>
+  </div>`;
+
+  if(!filtered.length){
+    html += `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">ไม่พบห้องที่ค้นหา</div><div class="empty-sub">ลองค้นหาด้วยคำอื่น</div></div>`;
+    setContent(html);
+    return;
+  }
+
+  filtered.forEach(subj => {
+    const dot = subj.sections[0]?.level === 'junior' ? LEVEL_DOT.junior : LEVEL_DOT.primary;
+    // ถ้ามีหลาย level ใน subject เดียว ใช้ primary สี primary
+    html += `
+    <div>
+      <div class="sec-hd">
+        <div class="sec-hd-dot" style="background:${dot};"></div>
+        <div class="sec-hd-lbl">${subj.name}</div>
+        <div class="sec-hd-count">${subj.sections.length} ห้อง</div>
+      </div>
+      <div class="cards-grid">`;
+
+    subj.sections.forEach(sec => {
+      const {risk, warn} = riskCounts(sec.id);
+      const att = termAttendSummary(sec.id);
+      const pct = att ? att.pct : null;
+      const barColor = pct === null ? '#94a3b8' : pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
+      const levelDot = LEVEL_DOT[sec.level] || '#94a3b8';
+
+      html += `<div class="rc" onclick="go('room-detail.html?section=${sec.id}')">
+        <div class="rc-head">
+          <div class="rc-name">
+            <div class="rc-name-dot" style="background:${levelDot};"></div>
+            ${subj.name} ${sec.name}
+          </div>
+          <div class="rc-badges">
+            ${risk>0?`<span class="badge badge-risk">เสี่ยง ${risk}</span>`:''}
+            ${warn>0?`<span class="badge badge-warn">เฝ้าระวัง ${warn}</span>`:''}
+          </div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-count">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+            ${sec.count||0} คน
+          </div>
+          <div class="rc-pct-row">
+            <div class="rc-pct" style="color:${barColor};">${pct !== null ? pct+'%' : '—'}</div>
+            ${att ? `<div class="rc-attend">${Math.round(att.attended/att.n)} / ${att.sessions} คาบ</div>` : '<div class="rc-attend" style="color:var(--muted);">ยังไม่มีข้อมูล</div>'}
+          </div>
+          <div class="rc-bar">
+            <div class="rc-bar-fill" style="width:${pct||0}%;background:${barColor};"></div>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  setContent(html);
+}
+
+function setFilter(subj){
+  _filterSubj = subj;
+  render();
+}
+
+function onSearch(val){
+  _search = val;
+  render();
+}
+
+/* ── init ── */
+(async function(){
+  await CKService.requireAuth();
+
+  const now = new Date();
+  const el = document.getElementById('d-sb-date');
+  if(el) el.textContent = `${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()+543}`;
+
+  _sections = await CKService.loadSections();
+  _subjects = buildSubjects(_sections);
+
+  // render ทันทีก่อน โหลด term stats
+  render();
+  if(_isMobile()) buildMobileList();
+
+  // โหลด term stats แล้ว re-render
+  await loadAllTermStats();
+  render();
+  if(_isMobile() && _mobileView === 'list') buildMobileList();
+})();
+</script>
+</body>
+</html>
