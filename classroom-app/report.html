@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>สถิติ — ClassKru</title>
+<title>ห้องเรียน — ClassKru</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="ck-theme.css" rel="stylesheet">
 <style>
@@ -194,66 +194,22 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 <div class="m-wrap">
   <div class="m-topbar" id="m-topbar">
     <svg id="m-topbar-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    <div class="m-topbar-title" id="m-topbar-title">สถิติ</div>
+    <div class="m-topbar-title" id="m-topbar-title">ห้องเรียน</div>
   </div>
   <div class="m-scroll" id="m-content">
     <div class="loading-wrap"><div class="spin"></div><div style="font-size:13px;">กำลังโหลด...</div></div>
   </div>
-  <nav class="m-bottom-nav">
-    <button class="m-bn" onclick="go('index.html')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-      <span>หน้าหลัก</span>
-    </button>
-    <button class="m-bn" onclick="go('schedule.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-      <span>ตารางสอน</span>
-    </button>
-    <button class="m-bn"  onclick="go('attendance.html')">
-      
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
-      <span>เช็คชื่อ</span>
-    </button>
-    <button class="m-bn active">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <span>สถิติ</span>
-    </button>
-    <button class="m-bn" onclick="go('settings.html')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span>ตั้งค่า</span>
-    </button>
-  </nav>
+  <nav class="m-bottom-nav" id="ck-bottomnav"><!-- nav --></nav>
 </div>
 
 <!-- DESKTOP -->
 <div class="d-wrap">
-  <aside class="d-sidebar">
-    <div class="d-sb-logo">
-      <img src="classkru-logo.png" alt="ClassKru" style="height:68px;width:auto;">
-    </div>
-    <div class="d-sb-sec">เมนู</div>
-    <a class="d-sb-link" onclick="go('index.html')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก
-    </a>
-    <a class="d-sb-link" onclick="go('schedule.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>ตารางสอน
-    </a>
-    <a class="d-sb-link" onclick="go('attendance.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ
-    </a>
-    <a class="d-sb-link active">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>สถิติ
-    </a>
-    <a class="d-sb-link" onclick="go('settings.html')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>ตั้งค่า
-    </a>
-    <div class="d-sb-spacer"></div>
-    <div class="d-sb-date" id="d-sb-date"></div>
-  </aside>
+  <aside class="d-sidebar" id="ck-sidebar"><!-- nav --></aside>
   <div class="d-main">
     <div class="d-topbar">
       <div class="d-topbar-title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        สถิติ
+        ห้องเรียน
       </div>
     </div>
     <div class="d-scroll">
@@ -265,7 +221,9 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 </div>
 
 <div class="toast" id="toast-el"></div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="ck-service.js"></script>
+<script src="ck-nav.js"></script>
 <script>
 /* ── helpers ── */
 function go(url){location.href=url;}
@@ -281,7 +239,7 @@ let _filterSubj = 'ทั้งหมด';
 let _search = '';
 let _mobileView = 'list'; // 'list' | 'detail'
 let _detailSectionId = null;
-let _detailTab = 'term'; // 'today' | 'week' | 'term' | 'summary'
+let _detailTab = 'today'; // 'today' | 'week' | 'term' | 'summary'
 let _detailDates = [];
 let _detailStudents = [];
 let _detailAttendance = {}; // dateKey → {studentId → record}
@@ -422,6 +380,7 @@ function buildMobileList(){
 async function openMobileDetail(sectionId){
   _mobileView = 'detail';
   _detailSectionId = sectionId;
+  _detailTab = 'today'; // เปิดห้องเข้ามาให้อยู่แท็บ "วันนี้" เสมอ
 
   const sec = _sections.find(s => s.id === sectionId);
   const subj = _subjects.find(s => s.sections.some(r => r.id === sectionId));
@@ -458,7 +417,7 @@ function closeMobileDetail(){
   if(topbar){
     topbar.innerHTML = `
       <svg id="m-topbar-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <div class="m-topbar-title" id="m-topbar-title">สถิติ</div>`;
+      <div class="m-topbar-title" id="m-topbar-title">ห้องเรียน</div>`;
   }
   buildMobileList();
 }
@@ -468,27 +427,78 @@ function setMobileTab(tab){
   renderMobileDetail();
 }
 
+/* ── Export Excel (.xlsx) ทั้งเทอมของห้องนี้ — 2 ชีต: สรุปรายคน + รายวัน ── */
+function exportRoomExcel(){
+  if(typeof XLSX === 'undefined'){ showToast('⏳ กำลังโหลดตัวสร้างไฟล์ ลองอีกครั้ง'); return; }
+  if(!_detailStudents.length){ showToast('ยังไม่มีนักเรียนในห้องนี้'); return; }
+
+  const sec = _sections.find(s => s.id === _detailSectionId);
+  const subj = _subjects.find(s => s.sections.some(r => r.id === _detailSectionId));
+  const roomLabel = `${subj?.name||''} ${sec?.name||''}`.trim() || 'ห้องเรียน';
+
+  const STATUS_TH = {present:'มา', absent:'ขาด', late:'สาย', leave:'ลา'};
+  const dates = [..._detailDates].sort();
+
+  // ── ชีต 1: สรุปรายคน ──
+  const summary = [['เลขที่','ชื่อ-นามสกุล','มา','ขาด','สาย','ลา','% เข้าเรียน']];
+  _detailStudents.forEach(s => {
+    let present=0, absent=0, late=0, leave=0;
+    dates.forEach(dk => {
+      const st = (_detailAttendance[dk]||{})[s.id]?.status;
+      if(st==='present') present++;
+      else if(st==='absent') absent++;
+      else if(st==='late') late++;
+      else if(st==='leave') leave++;
+    });
+    const checked = present+absent+late+leave;
+    const pct = checked>0 ? Math.round((present+late)/checked*100) : 0; // มา+สาย = เข้าเรียน, ลา/ขาด ไม่นับ
+    const name = `${s.fn||''} ${s.ln||''}`.trim();
+    summary.push([s.no||'', name, present, absent, late, leave, pct+'%']);
+  });
+
+  // ── ชีต 2: รายวัน (แถว=นักเรียน, คอลัมน์=วันที่) ──
+  const header = ['เลขที่','ชื่อ-นามสกุล', ...dates.map(dk => {
+    const d = new Date(dk);
+    return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  })];
+  const daily = [header];
+  _detailStudents.forEach(s => {
+    const row = [s.no||'', `${s.fn||''} ${s.ln||''}`.trim()];
+    dates.forEach(dk => {
+      const st = (_detailAttendance[dk]||{})[s.id]?.status;
+      row.push(st ? STATUS_TH[st] : '');
+    });
+    daily.push(row);
+  });
+
+  // ── สร้าง workbook ──
+  const wb = XLSX.utils.book_new();
+  const ws1 = XLSX.utils.aoa_to_sheet(summary);
+  ws1['!cols'] = [{wch:6},{wch:24},{wch:6},{wch:6},{wch:6},{wch:6},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'สรุปรายคน');
+
+  const ws2 = XLSX.utils.aoa_to_sheet(daily);
+  ws2['!cols'] = [{wch:6},{wch:24}, ...dates.map(()=>({wch:8}))];
+  XLSX.utils.book_append_sheet(wb, ws2, 'รายวัน');
+
+  const today = fmtKey(new Date());
+  const safeName = roomLabel.replace(/[\\/:*?"<>|]/g,'_');
+  XLSX.writeFile(wb, `เช็คชื่อ_${safeName}_${today}.xlsx`);
+  showToast('📊 ดาวน์โหลด Excel เรียบร้อย');
+}
+
 function renderMobileDetail(){
   const mEl = document.getElementById('m-content');
   if(!mEl) return;
 
   const sec = _sections.find(s => s.id === _detailSectionId);
   const subj = _subjects.find(s => s.sections.some(r => r.id === _detailSectionId));
-  const att = termAttendSummary(_detailSectionId);
-  const pct = att ? att.pct : 0;
-  const barColor = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
-  const {risk, warn} = riskCounts(_detailSectionId);
 
   const todayKey = fmtKey(new Date());
   const tabs = ['today','week','term','summary'];
-  const tabLabels = ['วันนี้','รายสัปดาห์','รายเทอม','สรุปผล'];
+  const tabLabels = ['วันนี้','รายสัปดาห์','รายภาคเรียน','สรุปผล'];
 
   let html = `
-  <div class="m-summary-strip" style="margin-bottom:10px;">
-    <div class="m-sum-stat"><div class="m-sum-num">${pct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
-    <div class="m-sum-stat"><div class="m-sum-num" style="color:#fbbf24;">${risk}</div><div class="m-sum-lbl">เสี่ยงหลุด</div></div>
-    <div class="m-sum-stat"><div class="m-sum-num">${_detailDates.length}</div><div class="m-sum-lbl">คาบที่เช็กแล้ว</div></div>
-  </div>
   <div class="m-tabs">
     ${tabs.map((t,i) => `<button class="m-tab${_detailTab===t?' active':''}" onclick="setMobileTab('${t}')">${tabLabels[i]}</button>`).join('')}
   </div>`;
@@ -499,6 +509,21 @@ function renderMobileDetail(){
     if(!todayRecs || !Object.keys(todayRecs).length){
       html += `<div class="m-empty"><div class="m-empty-icon">📋</div><div class="m-empty-txt">ยังไม่ได้เช็คชื่อวันนี้</div></div>`;
     } else {
+      // แถบสถิติวันนี้: มา/สาย/ขาด/ลา
+      let tPresent=0,tLate=0,tAbsent=0,tLeave=0;
+      _detailStudents.forEach(s => {
+        const st = todayRecs[s.id]?.status;
+        if(st==='present') tPresent++;
+        else if(st==='late') tLate++;
+        else if(st==='absent') tAbsent++;
+        else if(st==='leave') tLeave++;
+      });
+      html += `<div class="m-summary-strip" style="grid-template-columns:repeat(4,1fr);margin-bottom:10px;">
+        <div class="m-sum-stat"><div class="m-sum-num">${tPresent}</div><div class="m-sum-lbl">มา</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${tLate}</div><div class="m-sum-lbl">สาย</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${tAbsent}</div><div class="m-sum-lbl">ขาด</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${tLeave}</div><div class="m-sum-lbl">ลา</div></div>
+      </div>`;
       html += `<div class="m-today-card"><div class="m-today-title">การเข้าเรียนวันนี้</div>`;
       _detailStudents.forEach(s => {
         const r = todayRecs[s.id];
@@ -506,7 +531,7 @@ function renderMobileDetail(){
         const statusLabel = {present:'มาเรียน',absent:'ขาด',late:'สาย',leave:'ลา',none:'ไม่มีข้อมูล'}[status];
         const cls = {present:'m-att-present',absent:'m-att-absent',late:'m-att-late',leave:'m-att-leave',none:'m-att-none'}[status];
         html += `<div class="m-att-row">
-          <span class="m-att-name">${s.number ? s.number+'. ':''} ${s.name}</span>
+          <span class="m-att-name">${s.no ? s.no+'. ':''}${`${s.fn||''} ${s.ln||''}`.trim()}</span>
           <span class="m-att-status ${cls}">${statusLabel}</span>
         </div>`;
       });
@@ -539,6 +564,21 @@ function renderMobileDetail(){
       if(currentWeek.length) weeks.push({start:weekStart, dates:currentWeek});
 
       const n = _detailStudents.length;
+
+      // แถบสถิติรายสัปดาห์: เฉลี่ยทั้งช่วง / จำนวนสัปดาห์ / คาบ
+      let allAbsent=0;
+      _detailDates.forEach(dk => {
+        const recs = _detailAttendance[dk] || {};
+        _detailStudents.forEach(s => { if(recs[s.id]?.status==='absent') allAbsent++; });
+      });
+      const allSlots = _detailDates.length * n;
+      const allPct = allSlots>0 ? Math.round((allSlots-allAbsent)/allSlots*100) : 0;
+      html += `<div class="m-summary-strip" style="margin-bottom:10px;">
+        <div class="m-sum-stat"><div class="m-sum-num">${allPct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${weeks.length}</div><div class="m-sum-lbl">สัปดาห์</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${_detailDates.length}</div><div class="m-sum-lbl">คาบ</div></div>
+      </div>`;
+
       weeks.reverse().slice(0,8).forEach(w => {
         const total = w.dates.length * n;
         let absent = 0;
@@ -576,14 +616,27 @@ function renderMobileDetail(){
           else if(r.status==='leave') stuStats[s.id].leave++;
         });
       });
+      // แถบสถิติรายภาคเรียน: เฉลี่ย% / เสี่ยงหลุด / คาบ
+      const nStu = _detailStudents.length;
+      let termAbsent = 0;
+      Object.values(stuStats).forEach(st => termAbsent += st.absent);
+      const termSlots = _detailDates.length * nStu;
+      const termPct = termSlots>0 ? Math.round((termSlots-termAbsent)/termSlots*100) : 0;
+      const {risk: termRisk} = riskCounts(_detailSectionId);
+      html += `<div class="m-summary-strip" style="margin-bottom:10px;">
+        <div class="m-sum-stat"><div class="m-sum-num">${termPct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num" style="color:#fbbf24;">${termRisk}</div><div class="m-sum-lbl">เสี่ยงหลุด</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${_detailDates.length}</div><div class="m-sum-lbl">คาบที่เช็กแล้ว</div></div>
+      </div>`;
+
       const sorted = [..._detailStudents].sort((a,b) => (stuStats[b.id]?.absent||0) - (stuStats[a.id]?.absent||0));
       sorted.forEach(s => {
         const st = stuStats[s.id];
         const isRisk = st.absent >= MAX_ABSENT;
         const isWarn = !isRisk && st.absent >= Math.ceil(MAX_ABSENT * 0.7);
         html += `<div class="m-stu-row" style="${isRisk?'border-color:#fca5a5;':''}${isWarn?'border-color:#fde68a;':''}">
-          <div class="m-stu-num">${s.number||'—'}</div>
-          <div class="m-stu-name">${s.name}</div>
+          <div class="m-stu-num">${s.no||'—'}</div>
+          <div class="m-stu-name">${`${s.fn||''} ${s.ln||''}`.trim()||'—'}</div>
           <div class="m-stu-chips">
             ${st.absent>0?`<span class="m-chip m-chip-absent">ขาด ${st.absent}</span>`:''}
             ${st.late>0?`<span class="m-chip m-chip-late">สาย ${st.late}</span>`:''}
@@ -642,12 +695,16 @@ function renderMobileDetail(){
           {label:'ขาดเรียน',val:totalAbsent,color:'#dc2626'},
           {label:'มาสาย',val:totalLate,color:'#d97706'},
           {label:'ลา',val:totalLeave,color:'#2563eb'},
-          {label:'เข้าเรียน',val:totalPresent,color:barColor},
+          {label:'เข้าเรียน',val:totalPresent,color:'#16a34a'},
         ].map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f8fafc;">
           <span style="font-size:13px;font-weight:600;color:var(--text);">${x.label}</span>
           <span style="font-size:15px;font-weight:800;color:${x.color};">${x.val}</span>
         </div>`).join('')}
-      </div>`;
+      </div>
+      <button onclick="exportRoomExcel()" style="width:100%;margin-top:12px;padding:14px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ดาวน์โหลด Excel ทั้งเทอม
+      </button>`;
     }
   }
 
@@ -691,7 +748,7 @@ function render(){
 
   // search + pills
   let html = `
-  <div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:12px;">เลือกห้องที่จะดูสถิติ</div>
+  <div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:12px;">เลือกห้องเรียน</div>
   <div class="stats-row">
     <div class="stat-box"><div class="stat-num">${totalRooms}</div><div class="stat-lbl">ห้องทั้งหมด</div></div>
     <div class="stat-box"><div class="stat-num stat-pct">${avgPct}%</div><div class="stat-lbl">เฉลี่ยทั้งหมด</div></div>

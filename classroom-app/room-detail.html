@@ -181,53 +181,12 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
   <div class="m-scroll" id="m-content">
     <div class="loading-wrap"><div class="spin"></div><div style="font-size:13px;">กำลังโหลด...</div></div>
   </div>
-  <nav class="m-bottom-nav">
-    <button class="m-bn" onclick="go('index.html')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-      <span>หน้าหลัก</span>
-    </button>
-    <button class="m-bn" onclick="go('schedule.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
-      <span>ตารางสอน</span>
-    </button>
-    <button class="m-bn"  onclick="go('attendance.html')">
-      
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
-      <span>เช็คชื่อ</span>
-    </button>
-    <button class="m-bn active">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <span>สถิติ</span>
-    </button>
-    <button class="m-bn" onclick="go('settings.html')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span>ตั้งค่า</span>
-    </button>
-  </nav>
+  <nav class="m-bottom-nav" id="ck-bottomnav"><!-- nav --></nav>
 </div>
 
 <!-- DESKTOP -->
 <div class="d-wrap">
-  <aside class="d-sidebar">
-    <div class="d-sb-logo">
-      <img src="classkru-logo.png" alt="ClassKru" style="height:68px;width:auto;">
-    </div>
-    <div class="d-sb-sec">เมนู</div>
-    <a class="d-sb-link" onclick="go('index.html')">
-      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก
-    </a>
-    <a class="d-sb-link" onclick="go('attendance.html')">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ
-    </a>
-    <a class="d-sb-link active">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>สถิติ
-    </a>
-    <a class="d-sb-link" onclick="go('settings.html')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>ตั้งค่า
-    </a>
-    <div class="d-sb-spacer"></div>
-    <div class="d-sb-date" id="d-sb-date"></div>
-  </aside>
+  <aside class="d-sidebar" id="ck-sidebar"><!-- nav --></aside>
 
   <div class="d-main-wrap">
     <div class="d-topbar">
@@ -237,9 +196,13 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
       </button>
       <div class="d-topbar-title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        สถิติ
+        ห้องเรียน
       </div>
-      <div id="d-title" style="font-size:14px;color:var(--muted);font-weight:700;">—</div>
+      <div id="d-title" style="font-size:14px;color:var(--muted);font-weight:700;flex:1;text-align:right;">—</div>
+      <button onclick="exportRoomExcel()" style="margin-left:16px;padding:8px 16px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ดาวน์โหลด Excel
+      </button>
     </div>
     <div class="d-tabs-bar" id="d-tabs-bar">
       <button class="d-tab active-today" onclick="switchTab('today')">รายวัน</button>
@@ -271,7 +234,9 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 </div>
 
 <div class="toast" id="toast-el"></div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="ck-service.js"></script>
+<script src="ck-nav.js"></script>
 <script>
 /* ── helpers ── */
 function go(url){ window.location.href = url; }
@@ -955,6 +920,66 @@ async function init(){
   ]);
 
   renderTab(_currentTab);
+}
+
+/* ── Export Excel (.xlsx) ทั้งเทอม — 2 ชีต: สรุปรายคน + รายวัน ── */
+async function exportRoomExcel(){
+  if(typeof XLSX === 'undefined'){ showToast('⏳ กำลังโหลดตัวสร้างไฟล์ ลองอีกครั้ง'); return; }
+  if(!_students.length){ showToast('ยังไม่มีนักเรียนในห้องนี้'); return; }
+
+  showToast('⏳ กำลังสร้างไฟล์...');
+  const MONTHS_SH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const STATUS_TH = {present:'มา', absent:'ขาด', late:'สาย', leave:'ลา'};
+  const dates = [..._sessionDates].sort();
+
+  // ดึง attendance ทุกวัน (async)
+  const allAtt = {};
+  for(const dk of dates){ allAtt[dk] = await getOrLoadAttendance(dk); }
+
+  // ── ชีต 1: สรุปรายคน ──
+  const summary = [['เลขที่','ชื่อ-นามสกุล','มา','ขาด','สาย','ลา','% เข้าเรียน']];
+  _students.forEach(s => {
+    let present=0, absent=0, late=0, leave=0;
+    dates.forEach(dk => {
+      const st = (allAtt[dk]||{})[s.id]?.status;
+      if(st==='present') present++;
+      else if(st==='absent') absent++;
+      else if(st==='late') late++;
+      else if(st==='leave') leave++;
+    });
+    const checked = present+absent+late+leave;
+    const pct = checked>0 ? Math.round((present+late)/checked*100) : 0; // มา+สาย = เข้าเรียน
+    summary.push([s.no||'', `${s.fn||''} ${s.ln||''}`.trim(), present, absent, late, leave, pct+'%']);
+  });
+
+  // ── ชีต 2: รายวัน ──
+  const header = ['เลขที่','ชื่อ-นามสกุล', ...dates.map(dk => {
+    const d = new Date(dk); return `${d.getDate()} ${MONTHS_SH[d.getMonth()]}`;
+  })];
+  const daily = [header];
+  _students.forEach(s => {
+    const row = [s.no||'', `${s.fn||''} ${s.ln||''}`.trim()];
+    dates.forEach(dk => {
+      const st = (allAtt[dk]||{})[s.id]?.status;
+      row.push(st ? STATUS_TH[st] : '');
+    });
+    daily.push(row);
+  });
+
+  // ── สร้าง workbook ──
+  const wb = XLSX.utils.book_new();
+  const ws1 = XLSX.utils.aoa_to_sheet(summary);
+  ws1['!cols'] = [{wch:6},{wch:24},{wch:6},{wch:6},{wch:6},{wch:6},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'สรุปรายคน');
+  const ws2 = XLSX.utils.aoa_to_sheet(daily);
+  ws2['!cols'] = [{wch:6},{wch:24}, ...dates.map(()=>({wch:8}))];
+  XLSX.utils.book_append_sheet(wb, ws2, 'รายวัน');
+
+  const roomLabel = `${_section?.subject||''} ${_section?.name||''}`.trim() || 'ห้องเรียน';
+  const safeName = roomLabel.replace(/[\\/:*?"<>|]/g,'_');
+  const today = (function(){const d=new Date();const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;})();
+  XLSX.writeFile(wb, `เช็คชื่อ_${safeName}_${today}.xlsx`);
+  showToast('📊 ดาวน์โหลด Excel เรียบร้อย');
 }
 
 init();

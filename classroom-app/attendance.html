@@ -189,6 +189,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
   .d-sb-link{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:var(--tr);border-left:3px solid transparent;}
   .d-sb-link:hover{background:#f8fafc;color:var(--text);}
   .d-sb-link.active{background:var(--primary-bg);color:var(--primary);border-left-color:var(--primary);}
+  .d-sb-link svg{width:18px;height:18px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;transition:stroke .15s;}
   .d-sb-link .ico{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .d-sb-link .ico svg{width:18px;height:18px;stroke:#9ca3af;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s;}
   .d-sb-link.active .ico svg,.d-sb-link:hover .ico svg{stroke:var(--primary);}
@@ -439,29 +440,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 <div class="desktop-ui" id="desktopUI">
 
   <!-- SIDEBAR -->
-  <aside class="d-sidebar">
-    <div class="d-sb-logo">
-      <img src="classkru-logo.png" alt="ClassKru" style="height:68px;width:auto;">
-    </div>
-    <div class="d-sb-nav-section">เมนู</div>
-    <div class="d-sb-link" onclick="go('index.html')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>หน้าหลัก
-    </div>
-    <div class="d-sb-link" onclick="go('schedule.html')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>ตารางสอน
-    </div>
-    <div class="d-sb-link active">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>เช็คชื่อ
-    </div>
-    <div class="d-sb-link" onclick="go('report.html')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>สถิติ
-    </div>
-    <div class="d-sb-link" onclick="go('settings.html')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>ตั้งค่า
-    </div>
-    <div class="d-sb-spacer"></div>
-    <div class="d-sb-date" id="d-sb-date"></div>
-  </aside>
+  <aside class="d-sidebar" id="ck-sidebar"><!-- nav --></aside>
 
   <!-- MAIN -->
   <div class="d-main-wrap">
@@ -523,6 +502,8 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
     </div>
 
     <div class="d-quick">
+      <button class="d-date-pill2" id="d-date-pill2" onclick="openDateCal()" title="เลือกวันที่" style="cursor:pointer;font-size:13px;font-weight:700;padding:7px 16px;border-radius:10px;display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:'Sarabun',sans-serif;"></button>
+      <div class="d-quick-spacer" style="flex:0 0 8px;"></div>
       <span class="d-quick-label">ตั้งทั้งหมด</span>
       <button class="d-quick-btn dqb-p" onclick="setAll('present')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px"><path d="M20 6L9 17l-5-5"/></svg>มา</button>
       <button class="d-quick-btn dqb-l" onclick="setAll('late')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>สาย</button>
@@ -622,29 +603,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="m-bottom-nav">
-  <button class="m-bn" onclick="go('index.html')">
-    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-    <span>หน้าหลัก</span>
-  </button>
-  <button class="m-bn" onclick="go('schedule.html')">
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
-    <span>ตารางสอน</span>
-  </button>
-  <button class="m-bn active" >
-    
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
-      <span>เช็คชื่อ</span>
-  </button>
-  <button class="m-bn" onclick="go('report.html')">
-    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    <span>สถิติ</span>
-  </button>
-  <button class="m-bn" onclick="go('settings.html')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    <span>ตั้งค่า</span>
-  </button>
-</nav>
+<nav class="m-bottom-nav" id="ck-bottomnav"><!-- nav --></nav>
 
 <!-- TOAST -->
 <!-- ปฏิทินเลือกวันที่ -->
@@ -663,6 +622,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);}
 <div class="toast" id="toast-el"></div>
 
 <script src="ck-service.js"></script>
+<script src="ck-nav.js"></script>
 <script>
 /* ══ DATA — Supabase only ══ */
 const MAX_ABSENT = 8;
@@ -758,6 +718,8 @@ function updateDateDisplay(){
   if(el) el.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>${fmtLong(currentDate)}`;
   const dp=document.getElementById('d-date-pill');
   if(dp) dp.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>${fmtLong(currentDate)}`;
+  const dp2=document.getElementById('d-date-pill2');
+  if(dp2) dp2.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>${fmtLong(currentDate)}`;
 }
 
 /* ── ปฏิทินเลือกวันที่ (desktop) ── */
