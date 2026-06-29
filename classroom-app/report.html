@@ -678,19 +678,44 @@ function renderMobileDetail(){
         <span style="font-size:12px;padding:4px 11px;border-radius:20px;background:#eff6ff;color:#1d4ed8;">ลา ${cur.s.leave} ครั้ง</span>
       </div>`;
 
-      // ── เทรนด์รายสัปดาห์ (ล่าสุดอยู่บน) — แต่ละแถว = 1 สัปดาห์ ──
-      html += `<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">เทรนด์รายสัปดาห์</div>`;
-      [...weeks].reverse().slice(0,8).forEach(w => {
-        const pct = w.s.pct;
-        const color = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
-        const isCur = w === cur;
-        html += `<div class="m-week-row"${isCur?' style="border-color:'+color+';"':''}>
-          <div class="m-week-label">สัปดาห์ที่ ${w.no}${isCur?' <span style="font-size:10px;color:'+color+';font-weight:700;">• ล่าสุด</span>':''}
-            <span style="display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px;">${weekRange(w.start)} · ${w.s.periods} คาบ</span>
+      // ── กราฟแท่งเทรนด์รายสัปดาห์ ──
+      const chartWeeks = [...weeks].slice(-8);
+      const CHART_H = 110; // px พื้นที่แท่ง (ไม่รวม label บน)
+      html += `<div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:12px 12px 6px;">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;">เทรนด์เข้าเรียนรายสัปดาห์ <span style="font-weight:400;">(แต่ละแท่ง = 1 สัปดาห์)</span></div>
+        <div style="display:flex;gap:6px;">
+          <!-- Y-axis labels -->
+          <div style="position:relative;height:${CHART_H}px;width:28px;flex-shrink:0;">
+            <div style="position:absolute;top:0;right:0;font-size:10px;color:var(--muted);line-height:1;">100%</div>
+            <div style="position:absolute;top:20%;right:0;font-size:10px;color:var(--muted);line-height:1;transform:translateY(-50%);">80%</div>
+            <div style="position:absolute;bottom:0;right:0;font-size:10px;color:var(--muted);line-height:1;">0%</div>
           </div>
-          <div class="m-week-pct" style="color:${color};">${pct}%</div>
-        </div>`;
-      });
+          <!-- chart area -->
+          <div style="flex:1;height:${CHART_H}px;position:relative;">
+            <!-- grid line 100% (top) -->
+            <div style="position:absolute;top:0;left:0;right:0;border-top:1px solid #f1f5f9;pointer-events:none;"></div>
+            <!-- grid line 80% -->
+            <div style="position:absolute;top:20%;left:0;right:0;border-top:1px dashed #fbbf24;pointer-events:none;"></div>
+            <!-- grid line 0% (bottom) -->
+            <div style="position:absolute;bottom:0;left:0;right:0;border-top:1px solid #e2e8f0;pointer-events:none;"></div>
+            <!-- bars -->
+            <div style="position:absolute;inset:0;display:flex;gap:4px;align-items:flex-end;">
+              ${chartWeeks.map(w=>{
+                const pct = w.s.pct;
+                const color = pct>=80?'#16a34a':pct>=60?'#d97706':'#dc2626';
+                const isCur = w===cur;
+                return `<div style="flex:1;height:${pct}%;background:${color};border-radius:4px 4px 0 0;position:relative;opacity:${isCur?1:0.8};${isCur?'box-shadow:0 0 0 2px '+color+';':''}">
+                  <div style="position:absolute;bottom:100%;left:0;right:0;text-align:center;padding-bottom:2px;font-size:10px;font-weight:800;color:${color};white-space:nowrap;">${pct}%</div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+        <!-- x-axis labels -->
+        <div style="display:flex;gap:4px;margin-left:34px;margin-top:4px;">
+          ${chartWeeks.map(w=>`<div style="flex:1;font-size:9px;color:var(--muted);text-align:center;line-height:1.3;">${weekRange(w.start)}</div>`).join('')}
+        </div>
+      </div>`;
     }
   }
 
