@@ -100,11 +100,19 @@ create table if not exists public.attendance_sessions (
   course_section_id   uuid not null references public.course_sections(id) on delete cascade,
   teacher_id          uuid not null references public.users(id) on delete cascade,
   attendance_date     date not null,
+  period_no           int not null default 1,                                    -- คาบที่ 1,2,3... (1 วันมีได้หลายคาบ)
+  schedule_id         uuid references public.schedules(id) on delete set null,   -- อ้างอิงคาบในตารางสอน (optional)
   status              text not null default 'pending' check (status in ('pending','completed')),
   created_at          timestamptz not null default now(),
   updated_at          timestamptz not null default now(),
-  unique (course_section_id, attendance_date)
+  unique (course_section_id, attendance_date, period_no)                         -- หน่วยคือ "คาบ" ไม่ใช่ "วัน" → รองรับ export ปพ.5
 );
+
+-- ── MIGRATION สำหรับ DB ที่สร้างไปแล้ว (รันแยกถ้าตารางมีอยู่ก่อน) ──
+-- alter table public.attendance_sessions add column if not exists period_no int not null default 1;
+-- alter table public.attendance_sessions add column if not exists schedule_id uuid references public.schedules(id) on delete set null;
+-- alter table public.attendance_sessions drop constraint if exists attendance_sessions_course_section_id_attendance_date_key;
+-- alter table public.attendance_sessions add constraint attendance_sessions_section_date_period_key unique (course_section_id, attendance_date, period_no);
 
 -- ────────────────────────────────────────
 -- 7. ATTENDANCE_RECORDS

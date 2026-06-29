@@ -451,7 +451,7 @@ function exportRoomExcel(){
       else if(st==='leave') leave++;
     });
     const checked = present+absent+late+leave;
-    const pct = checked>0 ? Math.round((present+late)/checked*100) : 0; // มา+สาย = เข้าเรียน, ลา/ขาด ไม่นับ
+    const pct = checked>0 ? Math.round((checked-absent)/checked*100) : 0; // เฉพาะ "ขาด" หักเวลาเรียน — สาย/ลา นับเป็นมา
     const name = `${s.fn||''} ${s.ln||''}`.trim();
     summary.push([s.no||'', name, present, absent, late, leave, pct+'%']);
   });
@@ -485,6 +485,72 @@ function exportRoomExcel(){
   const safeName = roomLabel.replace(/[\\/:*?"<>|]/g,'_');
   XLSX.writeFile(wb, `เช็คชื่อ_${safeName}_${today}.xlsx`);
   showToast('📊 ดาวน์โหลด Excel เรียบร้อย');
+}
+
+/* ── Export "แบบบันทึกเวลาเรียน" (ใช้เป็นส่วนเวลาเรียนของ ปพ.5 ได้) ──
+   matrix: แถว=นักเรียน, คอลัมน์=คาบ(วันที่)  · สัญลักษณ์ / o ล ส (ครูปรับเองตามโรงเรียน)
+   สูตร: เฉพาะ "ขาด" หักเวลาเรียน — สาย/ลา นับเป็นมา · เกณฑ์ <80% = มส */
+function exportTimeRecord(){
+  if(typeof XLSX === 'undefined'){ showToast('⏳ กำลังโหลดตัวสร้างไฟล์ ลองอีกครั้ง'); return; }
+  if(!_detailStudents.length){ showToast('ยังไม่มีนักเรียนในห้องนี้'); return; }
+
+  const sec = _sections.find(s => s.id === _detailSectionId);
+  const subj = _subjects.find(s => s.sections.some(r => r.id === _detailSectionId));
+  const roomLabel = `${subj?.name||''} ${sec?.name||''}`.trim() || 'ห้องเรียน';
+
+  const SYM = {present:'/', absent:'o', late:'ส', leave:'ล'}; // สัญลักษณ์ ปพ.5
+  const dates = [..._detailDates].sort();
+  const fullPeriods = dates.length; // เวลาเรียนเต็ม (คาบ)
+
+  // หัวกระดาษ
+  const aoa = [];
+  aoa.push(['แบบบันทึกเวลาเรียน']);
+  aoa.push([`รายวิชา ${roomLabel}    ภาคเรียนที่ ......./.......    เวลาเรียนเต็ม ${fullPeriods} คาบ`]);
+  aoa.push([]);
+
+  // หัวตาราง: เลขที่ | ชื่อ-สกุล | คาบ(วันที่)... | มา | ขาด | สาย | ลา | ร้อยละเวลาเรียน | หมายเหตุ
+  const dateCols = dates.map((dk,i) => {
+    const d = new Date(dk);
+    return `คาบ${i+1}\n${d.getDate()}/${d.getMonth()+1}`;
+  });
+  aoa.push(['เลขที่','ชื่อ-สกุล', ...dateCols, 'มา','ขาด','สาย','ลา','ร้อยละเวลาเรียน','หมายเหตุ']);
+
+  // แถวนักเรียน
+  _detailStudents.forEach(s => {
+    const cells = [];
+    let absent=0, late=0, leave=0, checked=0;
+    dates.forEach(dk => {
+      const st = (_detailAttendance[dk]||{})[s.id]?.status;
+      cells.push(st ? SYM[st] : '');
+      if(st){ checked++; if(st==='absent')absent++; else if(st==='late')late++; else if(st==='leave')leave++; }
+    });
+    const maCount = checked - absent;                         // มา = เวลาเรียนจริง (นับสาย/ลาเป็นมา)
+    const pct = checked>0 ? Math.round((checked-absent)/checked*100) : 0;
+    const note = (checked>0 && pct<80) ? 'มส' : '';           // ต่ำกว่า 80% = ไม่มีสิทธิ์สอบ
+    const name = `${s.fn||''} ${s.ln||''}`.trim();
+    aoa.push([s.no||'', name, ...cells, maCount, absent, late, leave, pct+'%', note]);
+  });
+
+  // ท้ายตาราง: คำอธิบายสัญลักษณ์ + เกณฑ์
+  aoa.push([]);
+  aoa.push(['สัญลักษณ์:  / = มา    o = ขาด    ล = ลา    ส = สาย']);
+  aoa.push(['เกณฑ์: นักเรียนต้องมีเวลาเรียนไม่น้อยกว่า 80% — ต่ำกว่าเกณฑ์ = มส (ไม่มีสิทธิ์สอบ)']);
+  aoa.push(['ลงชื่อ ............................................ ครูผู้สอน']);
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  const lastCol = 2 + dates.length + 6 - 1; // index คอลัมน์สุดท้าย (0-based)
+  ws['!merges'] = [
+    {s:{r:0,c:0}, e:{r:0,c:lastCol}}, // title
+    {s:{r:1,c:0}, e:{r:1,c:lastCol}}, // subtitle
+  ];
+  ws['!cols'] = [{wch:6},{wch:22}, ...dates.map(()=>({wch:7})), {wch:5},{wch:5},{wch:5},{wch:5},{wch:14},{wch:8}];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'เวลาเรียน');
+  const today = fmtKey(new Date());
+  const safeName = roomLabel.replace(/[\\/:*?"<>|]/g,'_');
+  XLSX.writeFile(wb, `แบบบันทึกเวลาเรียน_${safeName}_${today}.xlsx`);
+  showToast('📋 ดาวน์โหลดแบบบันทึกเวลาเรียนเรียบร้อย');
 }
 
 function renderMobileDetail(){
@@ -565,33 +631,63 @@ function renderMobileDetail(){
 
       const n = _detailStudents.length;
 
-      // แถบสถิติรายสัปดาห์: เฉลี่ยทั้งช่วง / จำนวนสัปดาห์ / คาบ
-      let allAbsent=0;
-      _detailDates.forEach(dk => {
-        const recs = _detailAttendance[dk] || {};
-        _detailStudents.forEach(s => { if(recs[s.id]?.status==='absent') allAbsent++; });
-      });
-      const allSlots = _detailDates.length * n;
-      const allPct = allSlots>0 ? Math.round((allSlots-allAbsent)/allSlots*100) : 0;
-      html += `<div class="m-summary-strip" style="margin-bottom:10px;">
-        <div class="m-sum-stat"><div class="m-sum-num">${allPct}%</div><div class="m-sum-lbl">เฉลี่ยเข้าเรียน</div></div>
-        <div class="m-sum-stat"><div class="m-sum-num">${weeks.length}</div><div class="m-sum-lbl">สัปดาห์</div></div>
-        <div class="m-sum-stat"><div class="m-sum-num">${_detailDates.length}</div><div class="m-sum-lbl">คาบ</div></div>
-      </div>`;
-
-      weeks.reverse().slice(0,8).forEach(w => {
-        const total = w.dates.length * n;
-        let absent = 0;
+      // นิยาม: มีแค่ "ขาด" ที่หักเวลาเรียน — สาย/ลา นับเป็นมา (แต่รายงานแยก)
+      // คิดต่อ "คาบ" ไม่ใช่ "วัน": total = จำนวนคาบ × จำนวนนักเรียน
+      function statWeek(w){
+        let absent=0, late=0, leave=0;
         w.dates.forEach(dk => {
           const recs = _detailAttendance[dk] || {};
-          _detailStudents.forEach(s => { if(recs[s.id]?.status==='absent') absent++; });
+          _detailStudents.forEach(s => {
+            const st = recs[s.id]?.status;
+            if(st==='absent') absent++;
+            else if(st==='late') late++;
+            else if(st==='leave') leave++;
+          });
         });
-        const pct = total > 0 ? Math.round((total - absent) / total * 100) : 0;
+        const total = w.dates.length * n;
+        const pct = total>0 ? Math.round((total-absent)/total*100) : 0;
+        return {absent, late, leave, total, pct, periods:w.dates.length};
+      }
+      // ช่วงวันที่ของสัปดาห์ (จันทร์–อาทิตย์) ใต้ป้ายสัปดาห์ — ช่วยเช็คง่าย
+      function weekRange(monKey){
+        const s = new Date(monKey); const e = new Date(s); e.setDate(s.getDate()+6);
+        return s.getMonth()===e.getMonth()
+          ? `${s.getDate()}–${e.getDate()} ${MONTHS[e.getMonth()]}`
+          : `${s.getDate()} ${MONTHS[s.getMonth()]} – ${e.getDate()} ${MONTHS[e.getMonth()]}`;
+      }
+      weeks.forEach((w,i) => { w.no = i+1; w.s = statWeek(w); });
+
+      // ── แถบสรุป "สัปดาห์ล่าสุด" : อัตราเข้าเรียน + เทียบสัปดาห์ก่อน + คาบ ──
+      const cur = weeks[weeks.length-1];
+      const prev = weeks[weeks.length-2];
+      const delta = prev ? cur.s.pct - prev.s.pct : null;
+      const deltaHtml = delta===null ? '—'
+        : delta>0 ? `<span style="color:#16a34a;">▲ ${delta}%</span>`
+        : delta<0 ? `<span style="color:#dc2626;">▼ ${Math.abs(delta)}%</span>`
+        : `<span style="color:var(--muted);">±0%</span>`;
+      const curColor = cur.s.pct>=80 ? '#16a34a' : cur.s.pct>=60 ? '#d97706' : '#dc2626';
+      html += `<div class="m-summary-strip" style="margin-bottom:8px;">
+        <div class="m-sum-stat"><div class="m-sum-num" style="color:${curColor};">${cur.s.pct}%</div><div class="m-sum-lbl">เข้าเรียนสัปดาห์นี้</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${deltaHtml}</div><div class="m-sum-lbl">เทียบสัปดาห์ก่อน</div></div>
+        <div class="m-sum-stat"><div class="m-sum-num">${cur.s.periods}</div><div class="m-sum-lbl">คาบสัปดาห์นี้</div></div>
+      </div>`;
+      // ขาด/สาย/ลา ของสัปดาห์นี้ — นับเป็น "ครั้ง" (event)
+      html += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+        <span style="font-size:12px;padding:4px 11px;border-radius:20px;background:#fef2f2;color:#b91c1c;">ขาด ${cur.s.absent} ครั้ง</span>
+        <span style="font-size:12px;padding:4px 11px;border-radius:20px;background:#fffbeb;color:#b45309;">สาย ${cur.s.late} ครั้ง</span>
+        <span style="font-size:12px;padding:4px 11px;border-radius:20px;background:#eff6ff;color:#1d4ed8;">ลา ${cur.s.leave} ครั้ง</span>
+      </div>`;
+
+      // ── เทรนด์รายสัปดาห์ (ล่าสุดอยู่บน) — แต่ละแถว = 1 สัปดาห์ ──
+      html += `<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">เทรนด์รายสัปดาห์</div>`;
+      [...weeks].reverse().slice(0,8).forEach(w => {
+        const pct = w.s.pct;
         const color = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
-        const d = new Date(w.start);
-        const label = `สัปดาห์ ${d.getDate()} ${MONTHS[d.getMonth()]}`;
-        html += `<div class="m-week-row">
-          <div class="m-week-label">${label} <span style="font-size:11px;color:var(--muted);font-weight:400;">${w.dates.length} คาบ</span></div>
+        const isCur = w === cur;
+        html += `<div class="m-week-row"${isCur?' style="border-color:'+color+';"':''}>
+          <div class="m-week-label">สัปดาห์ที่ ${w.no}${isCur?' <span style="font-size:10px;color:'+color+';font-weight:700;">• ล่าสุด</span>':''}
+            <span style="display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px;">${weekRange(w.start)} · ${w.s.periods} คาบ</span>
+          </div>
           <div class="m-week-pct" style="color:${color};">${pct}%</div>
         </div>`;
       });
@@ -605,17 +701,21 @@ function renderMobileDetail(){
     } else {
       // compute per-student stats
       const stuStats = {};
-      _detailStudents.forEach(s => { stuStats[s.id] = {absent:0,late:0,leave:0}; });
+      _detailStudents.forEach(s => { stuStats[s.id] = {present:0,absent:0,late:0,leave:0,checked:0}; });
       _detailDates.forEach(dk => {
         const recs = _detailAttendance[dk] || {};
         _detailStudents.forEach(s => {
           const r = recs[s.id];
           if(!r) return;
-          if(r.status==='absent') stuStats[s.id].absent++;
+          stuStats[s.id].checked++;
+          if(r.status==='present') stuStats[s.id].present++;
+          else if(r.status==='absent') stuStats[s.id].absent++;
           else if(r.status==='late') stuStats[s.id].late++;
           else if(r.status==='leave') stuStats[s.id].leave++;
         });
       });
+      // ร้อยละเวลาเรียนรายคน: เฉพาะ "ขาด" หักเวลาเรียน · <80% = มส
+      const stuPct = id => { const st=stuStats[id]; return st.checked>0 ? Math.round((st.checked-st.absent)/st.checked*100) : 0; };
       // แถบสถิติรายภาคเรียน: เฉลี่ย% / เสี่ยงหลุด / คาบ
       const nStu = _detailStudents.length;
       let termAbsent = 0;
@@ -632,8 +732,11 @@ function renderMobileDetail(){
       const sorted = [..._detailStudents].sort((a,b) => (stuStats[b.id]?.absent||0) - (stuStats[a.id]?.absent||0));
       sorted.forEach(s => {
         const st = stuStats[s.id];
-        const isRisk = st.absent >= MAX_ABSENT;
+        const pct = stuPct(s.id);
+        const isMS = st.checked>0 && pct < 80;            // ต่ำกว่า 80% = มส (ไม่มีสิทธิ์สอบ)
+        const isRisk = st.absent >= MAX_ABSENT || isMS;
         const isWarn = !isRisk && st.absent >= Math.ceil(MAX_ABSENT * 0.7);
+        const pctColor = pct>=80 ? '#16a34a' : pct>=60 ? '#d97706' : '#dc2626';
         html += `<div class="m-stu-row" style="${isRisk?'border-color:#fca5a5;':''}${isWarn?'border-color:#fde68a;':''}">
           <div class="m-stu-num">${s.no||'—'}</div>
           <div class="m-stu-name">${`${s.fn||''} ${s.ln||''}`.trim()||'—'}</div>
@@ -642,7 +745,9 @@ function renderMobileDetail(){
             ${st.late>0?`<span class="m-chip m-chip-late">สาย ${st.late}</span>`:''}
             ${st.leave>0?`<span class="m-chip m-chip-leave">ลา ${st.leave}</span>`:''}
             ${st.absent===0&&st.late===0&&st.leave===0?`<span class="m-chip m-chip-ok">ปกติ</span>`:''}
+            ${isMS?`<span class="m-chip" style="background:#fee2e2;color:#b91c1c;font-weight:800;">มส</span>`:''}
           </div>
+          <div style="font-size:15px;font-weight:800;color:${pctColor};min-width:42px;text-align:right;">${st.checked>0?pct+'%':'—'}</div>
         </div>`;
       });
     }
@@ -704,6 +809,10 @@ function renderMobileDetail(){
       <button onclick="exportRoomExcel()" style="width:100%;margin-top:12px;padding:14px;border:none;border-radius:14px;background:var(--primary);color:#fff;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         ดาวน์โหลด Excel ทั้งเทอม
+      </button>
+      <button onclick="exportTimeRecord()" style="width:100%;margin-top:8px;padding:14px;border:1.5px solid var(--primary);border-radius:14px;background:#fff;color:var(--primary);font-family:'Sarabun',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+        ดาวน์โหลดแบบบันทึกเวลาเรียน
       </button>`;
     }
   }
